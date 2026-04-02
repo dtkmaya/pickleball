@@ -22,16 +22,8 @@
 
   .container { padding: 20px; }
 
-  .player-new {
-    color: green;
-    font-weight: bold;
-  }
-
-  .player-dropped {
-    text-decoration: line-through;
-    color: grey;
-    opacity: 0.7;
-  }
+  .player-new { color: green; font-weight: bold; }
+  .player-dropped { text-decoration: line-through; color: grey; opacity: 0.7; }
 
   table { 
     width: 100%; 
@@ -42,11 +34,7 @@
     overflow: hidden;
   }
 
-  th, td { 
-    border: 1px solid #e0e0e0; 
-    padding: 10px; 
-    vertical-align: top; 
-  }
+  th, td { border: 1px solid #e0e0e0; padding: 10px; vertical-align: top; }
 
   th { background-color: #c94f7c; color: white; }
   td { background-color: #fff7f9; }
@@ -54,7 +42,8 @@
   ol { padding-left: 20px; margin: 5px 0; }
   p { margin: 5px 0; }
 
-  .nav-arrows { font-size: 1.2em; cursor: pointer; }
+  /* Navigation arrows */
+  .nav-arrows { font-size: 1.6em; font-weight: bold; color: #c94f7c; cursor: pointer; text-shadow: 1px 1px #fff; }
   .nav-arrows span { margin-left: 10px; margin-right: 10px; }
 </style>
 </head>
@@ -65,9 +54,7 @@
     <img src="LogoWeb-Kangaroo.png" alt="Pickleball Logo">
     <h1>Pickleball Weekly Game Sessions</h1>
   </div>
-  <div class="nav-arrows" id="navArrows">
-    <!-- arrows inserted dynamically -->
-  </div>
+  <div class="nav-arrows" id="navArrows"></div>
 </header>
 
 <div class="container">
@@ -100,7 +87,7 @@ function renderPage(page) {
 
   pageEvents.forEach(event => {
     const th = document.createElement('th');
-    th.textContent = event.date;
+    th.innerHTML = `<strong>${event.date}</strong><br>Cap: ${event.cap || '-'} | Cost: ${event.cost || '-'}`;
     datesRow.appendChild(th);
 
     const tdPlayers = document.createElement('td');
@@ -122,7 +109,7 @@ function renderPage(page) {
     waitlistRow.appendChild(tdWait);
   });
 
-  // Update navigation arrows
+  // Navigation arrows
   navArrows.innerHTML = '';
   if (currentPage > 1) {
     const back = document.createElement('span');
