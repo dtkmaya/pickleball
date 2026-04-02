@@ -2,6 +2,8 @@
   "events": [
     {
       "date": "Thursday 02/4/26, 9:30 pm – 12:00 am",
+	    "cap": 18,
+		"cost": "$20",
       "players": [
         { "name": "Nick", "status": "active" },
         { "name": "Michael", "status": "active" },
@@ -28,6 +30,8 @@
     },
     {
       "date": "Friday 03/4/26, 8:00 pm – 11:00 pm",
+	    "cap": 18,
+		"cost": "$25",	  
       "players": [
         { "name": "Tuấn", "status": "active" },
         { "name": "Trinh", "status": "active" },
@@ -71,6 +75,8 @@
     },
     {
       "date": "Friday 03/4/26, 9:00 pm – 11:00 pm",
+	    "cap": 6,
+		"cost": "$20",
       "players": [
         { "name": "Khải", "status": "active" },
         { "name": "Thanh", "status": "active" },
@@ -83,6 +89,9 @@
     },
     {
       "date": "Sunday 04/4/26, 3:00 pm – 6:00 pm",
+	    "cap": 18,
+		"cost": "$25",
+
       "players": [],
       "waitlist": []
     }
