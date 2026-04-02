@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -10,17 +10,6 @@
   header img { height: 40px; margin-right: 10px; }
   header h1 { margin: 0; font-size: 1.5em; }
   .container { padding: 20px; }
-
-  .player-new {
-    color: green;
-    font-weight: bold;
-  }
-
-  .player-dropped {
-    text-decoration: line-through;
-    color: grey;
-    opacity: 0.7;
-  }
 
   table { 
     width: 100%; 
@@ -37,29 +26,42 @@
     vertical-align: top; 
   }
 
+  /* Updated header colour (warm, welcoming, darker than pink) */
   th { 
     background-color: #c94f7c; 
     color: white;
   }
 
+  /* Slight row contrast */
   td { background-color: #fff7f9; }
 
   ol { padding-left: 20px; margin: 5px 0; }
   p { margin: 5px 0; }
+
+  /* Player status styling */
+  .player-new {
+    color: green;
+    font-weight: bold;
+  }
+
+  .player-dropped {
+    text-decoration: line-through;
+    color: grey;
+    opacity: 0.7;
+  }
 </style>
 </head>
 <body>
 
 <header>
   <img src="LogoWeb-Kangaroo.png" alt="Pickleball Logo">
-  <h1 style="font-size: 1.4em; font-weight: 500;">
-    Pickleball Weekly Game Sessions
-  </h1>
+   <h1 style="font-size: 1.4em; font-weight: 500;">
+	Pickleball Weekly Game Sessions
+   </h1>
 </header>
 
 <div class="container">
-  <p><strong>Cost:</strong> $20 – PayID: Thi L – 0421 829 872</p>
-  <p><strong>Courts:</strong> 3 | <strong>Cap:</strong> 18 players | Drinks included</p>
+  <p><strong>Courts:</strong> 3 | Drinks included</p>
 
   <table id="eventsTable">
     <tr id="datesRow"></tr>
@@ -69,7 +71,7 @@
 </div>
 
 <script>
-fetch('players.json?v=' + new Date().getTime()) // cache-busting
+fetch('players.json')
   .then(res => res.json())
   .then(data => {
     const datesRow = document.getElementById('datesRow');
@@ -77,40 +79,28 @@ fetch('players.json?v=' + new Date().getTime()) // cache-busting
     const waitlistRow = document.getElementById('waitlistRow');
 
     data.events.forEach(event => {
-      // Date header
+      // Header cell with date, cost, and cap
       const th = document.createElement('th');
-      th.textContent = event.date;
+      th.innerHTML = `<strong>${event.date}</strong><br>
+                      Cost: $${event.cost}<br>
+                      Cap: <span style="${event.cap <=6 ? 'color:red; font-weight:bold;' : ''}">${event.cap}</span>`;
       datesRow.appendChild(th);
 
-      const isFull = event.players.length >= 18;
-
-      // Players row
+      // Players list with status styling
       const tdPlayers = document.createElement('td');
-      tdPlayers.innerHTML = `<strong>Players ${isFull ? '(FULL)' : ''}</strong>
-        <ol>${
-          event.players.length === 0
-            ? '<li>TBA</li>'
-            : event.players.map(p => {
-                if (p.status === 'dropped' && p.replacement) {
-                  return `<li><span class="player-dropped">${p.name}</span> → <span class="player-new">${p.replacement}</span></li>`;
-                } else {
-                  let className = '';
-                  if (p.status === 'new') className = 'player-new';
-                  if (p.status === 'dropped') className = 'player-dropped';
-                  return `<li class="${className}">${p.name}</li>`;
-                }
-              }).join('')
-        }</ol>`;
+      tdPlayers.innerHTML = `<strong>Players ${event.players.length >= event.cap ? '(FULL)' : ''}</strong>
+        <ol>${event.players.map(p => {
+          let className = '';
+          if (p.status === 'new') className = 'player-new';
+          if (p.status === 'dropped') className = 'player-dropped';
+          return `<li class="${className}">${p.name}</li>`;
+        }).join('')}</ol>`;
       playersRow.appendChild(tdPlayers);
 
-      // Waitlist row: show only if there are waitlist players
+      // Waitlist
       const tdWait = document.createElement('td');
       tdWait.innerHTML = `<strong>Waiting List</strong>
-        <ol>${
-          event.waitlist.length === 0
-            ? ''
-            : event.waitlist.map(p => `<li>${p.name}</li>`).join('')
-        }</ol>`;
+        <ol>${event.waitlist.map(p => `<li>${p.name}</li>`).join('')}</ol>`;
       waitlistRow.appendChild(tdWait);
     });
   })
