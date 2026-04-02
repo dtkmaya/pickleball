@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -20,7 +20,7 @@
     letter-spacing: 1px;
   }
 
-  .container { padding: 20px; }
+  .container { padding: 15px; }
 
   .player-new { color: green; font-weight: bold; }
   .player-dropped { text-decoration: line-through; color: grey; opacity: 0.7; }
@@ -28,7 +28,7 @@
   table { 
     width: 100%; 
     border-collapse: collapse; 
-    margin-top: 10px; 
+    margin-top: 8px; 
     background-color: white; 
     border-radius: 8px;
     overflow: hidden;
@@ -37,8 +37,8 @@
 
   th, td { border: 1px solid #e0e0e0; padding: 10px; vertical-align: top; }
 
-  th { background-color: #c94f7c; color: white; } 
-  td { background-color: #fff7f9; }
+  th { background-color: #c94f7c; color: white; font-size: 1.6em; } /* slightly bigger */
+  td { background-color: #fff7f9; font-size: 1.6em; } /* slightly bigger */
 
   ol { padding-left: 20px; margin: 5px 0; }
   p { margin: 5px 0; }
@@ -99,33 +99,31 @@ function renderPage(page) {
   const pageEvents = eventsData.slice(startIndex, endIndex);
 
   pageEvents.forEach(event => {
-    // Fix: read JSON key with exact case
-    const courtsText = event.Courts || event.courts || '-';
-
     const th = document.createElement('th');
-    th.innerHTML = <strong>${event.date}</strong><br>Courts: ${courtsText}<br>Cap: ${event.cap || '-'} | Cost: ${event.cost || '-'};
+    th.innerHTML = `<strong>${event.date}</strong><br>Courts: ${event.Courts || '-'}<br>Cap: ${event.cap || '-'} | Cost: ${event.cost || '-'}`;
     datesRow.appendChild(th);
 
     const tdPlayers = document.createElement('td');
-    tdPlayers.innerHTML = <strong>Players ${event.players.length >= (event.cap || event.players.length) ? '(FULL)' : ''}</strong>
+    tdPlayers.innerHTML = `<strong>Players ${event.players.length >= (event.cap || event.players.length) ? '(FULL)' : ''}</strong>
       <ol>${event.players.map(p => {
         if (p.status === 'dropped' && p.replacement) {
-          return <li>
+          // Only dropped player crossed out, replacement normal
+          return `<li>
                     <span class="player-dropped">${p.name}</span> → 
                     <span class="player-new" style="text-decoration: none;">${p.replacement}</span>
-                  </li>;
+                  </li>`;
         } else {
           let className = '';
           if (p.status === 'new') className = 'player-new';
           if (p.status === 'dropped') className = 'player-dropped';
-          return <li class="${className}">${p.name}</li>;
+          return `<li class="${className}">${p.name}</li>`;
         }
-      }).join('')}</ol>;
+      }).join('')}</ol>`;
     playersRow.appendChild(tdPlayers);
 
     const tdWait = document.createElement('td');
-    tdWait.innerHTML = <strong>Waiting List</strong>
-      <ol>${event.waitlist.map(p => <li>${p.name}</li>).join('')}</ol>;
+    tdWait.innerHTML = `<strong>Waiting List</strong>
+      <ol>${event.waitlist.map(p => `<li>${p.name}</li>`).join('')}</ol>`;
     waitlistRow.appendChild(tdWait);
   });
 
