@@ -69,7 +69,7 @@
 </div>
 
 <script>
-fetch('players.json')
+fetch('players.json?v=' + new Date().getTime()) // cache-busting
   .then(res => res.json())
   .then(data => {
     const datesRow = document.getElementById('datesRow');
@@ -89,7 +89,6 @@ fetch('players.json')
       tdPlayers.innerHTML = `<strong>Players ${isFull ? '(FULL)' : ''}</strong>
         <ol>${event.players.map(p => {
           if (p.status === 'dropped' && p.replacement) {
-            // Dropped player with replacement
             return `<li><span class="player-dropped">${p.name}</span> → <span class="player-new">${p.replacement}</span></li>`;
           } else {
             let className = '';
