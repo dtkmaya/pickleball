@@ -39,6 +39,11 @@
   th { background-color: #c94f7c; color: white; } 
   td { background-color: #fff7f9; }
 
+  .expired { 
+    background-color: #d3d3d3 !important; 
+    color: #888 !important; 
+  }
+
   ol { 
     padding-left: 20px; 
     margin: 5px 0; 
@@ -102,6 +107,30 @@ const waitlistRow = document.getElementById('waitlistRow');
 const navLeft = document.getElementById('navLeft');
 const navRight = document.getElementById('navRight');
 
+// Helper: check if event date/time has passed
+function isExpired(eventDateStr) {
+  try {
+    // Format: "Thurs 02/4/26, 9:30pm–12:00am"
+    const parts = eventDateStr.split(',');
+    if (parts.length < 2) return false;
+
+    const datePart = parts[0].trim().split(' ')[1]; // "02/4/26"
+    const timePart = parts[1].trim().split('–')[0]; // "9:30pm"
+
+    const [day, month, year] = datePart.split('/').map(Number);
+    let [time, meridiem] = timePart.match(/(\d{1,2}:\d{2})(am|pm)/i).slice(1);
+    let [hours, minutes] = time.split(':').map(Number);
+    if (meridiem.toLowerCase() === 'pm' && hours !== 12) hours += 12;
+    if (meridiem.toLowerCase() === 'am' && hours === 12) hours = 0;
+
+    const eventDate = new Date(2000 + year, month - 1, day, hours, minutes);
+    const now = new Date();
+    return eventDate < now;
+  } catch {
+    return false;
+  }
+}
+
 function renderPage(page) {
   datesRow.innerHTML = '';
   playersRow.innerHTML = '';
@@ -111,35 +140,37 @@ function renderPage(page) {
   const endIndex = Math.min(startIndex + maxColumnsPerPage, eventsData.length);
   const pageEvents = eventsData.slice(startIndex, endIndex);
 
-  pageEvents.forEach((event, colIndex) => {
+  pageEvents.forEach(event => {
     const courtsText = event.Courts || event.courts || '-';
+    const expired = isExpired(event.date);
 
     const th = document.createElement('th');
     th.innerHTML = `<strong>${event.date}</strong><br>Courts: ${courtsText}<br>Cap: ${event.cap || '-'} | Cost: ${event.cost || '-'}`;
+    if (expired) th.classList.add('expired');
     datesRow.appendChild(th);
 
     const tdPlayers = document.createElement('td');
     tdPlayers.innerHTML = `<strong>Players ${event.players.length >= (event.cap || event.players.length) ? '(FULL)' : ''}</strong>
-      <ol start="${startIndex + colIndex * maxColumnsPerPage + 1}">
-        ${event.players.map(p => {
-          if (p.status === 'dropped' && p.replacement) {
-            return `<li>
-                      <span class="player-dropped">${p.name}</span> → 
-                      <span class="player-new" style="text-decoration: none;">${p.replacement}</span>
-                    </li>`;
-          } else {
-            let className = '';
-            if (p.status === 'new') className = 'player-new';
-            if (p.status === 'dropped') className = 'player-dropped';
-            return `<li class="${className}">${p.name}</li>`;
-          }
-        }).join('')}
-      </ol>`;
+      <ol>${event.players.map(p => {
+        if (p.status === 'dropped' && p.replacement) {
+          return `<li>
+                    <span class="player-dropped">${p.name}</span> → 
+                    <span class="player-new" style="text-decoration: none;">${p.replacement}</span>
+                  </li>`;
+        } else {
+          let className = '';
+          if (p.status === 'new') className = 'player-new';
+          if (p.status === 'dropped') className = 'player-dropped';
+          return `<li class="${className}">${p.name}</li>`;
+        }
+      }).join('')}</ol>`;
+    if (expired) tdPlayers.classList.add('expired');
     playersRow.appendChild(tdPlayers);
 
     const tdWait = document.createElement('td');
     tdWait.innerHTML = `<strong>Waiting List</strong>
       <ol>${event.waitlist.map(p => `<li>${p.name}</li>`).join('')}</ol>`;
+    if (expired) tdWait.classList.add('expired');
     waitlistRow.appendChild(tdWait);
   });
 
