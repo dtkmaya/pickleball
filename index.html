@@ -9,7 +9,6 @@
 	header { background-color: #FFC0CB; color: white; padding: 10px 20px; display: flex; align-items: center; }
 	header img { height: 40px; margin-right: 10px; }
 	header h1 { margin: 0; font-size: 1.5em; }
-
 	.container { padding: 20px; }
 
 	table { 
@@ -59,13 +58,13 @@
 </div>
 
 <script>
-const EVENTS_PER_PAGE = 3; // max columns per page
+const EVENTS_PER_PAGE = 3;
 let currentPage = 1;
 let eventsData = [];
 
 function renderPage(page) {
   const container = document.getElementById('tableContainer');
-  container.innerHTML = ''; // clear previous
+  container.innerHTML = '';
 
   const start = (page - 1) * EVENTS_PER_PAGE;
   const end = start + EVENTS_PER_PAGE;
@@ -77,29 +76,31 @@ function renderPage(page) {
   }
 
   const table = document.createElement('table');
-
   const datesRow = document.createElement('tr');
   const playersRow = document.createElement('tr');
   const waitlistRow = document.createElement('tr');
 
   eventsPage.forEach(event => {
-    // Date header
     const th = document.createElement('th');
-    th.textContent = event.date;
+    const isFull = event.players.length >= (event.cap || 18);
+    th.textContent = `${event.date}${isFull ? ' (FULL)' : ''}`;
     datesRow.appendChild(th);
 
-    // Players
     const tdPlayers = document.createElement('td');
-    tdPlayers.innerHTML = `<strong>Players ${event.players.length >= 18 ? '(FULL)' : ''}</strong>
+    tdPlayers.innerHTML = `<strong>Players</strong>
       <ol>${event.players.map(p => {
-        let className = '';
-        if(p.status === 'new') className = 'player-new';
-        if(p.status === 'dropped') className = 'player-dropped';
-        return `<li class="${className}">${p.name}${p.replacement ? ' → ' + p.replacement : ''}</li>`;
+        if(p.status === 'dropped' && p.replacement){
+          return `<li class="player-dropped">${p.name}</li><li class="player-new">${p.replacement}</li>`;
+        } else if(p.status === 'dropped'){
+          return `<li class="player-dropped">${p.name}</li>`;
+        } else if(p.status === 'new'){
+          return `<li class="player-new">${p.name}</li>`;
+        } else {
+          return `<li>${p.name}</li>`;
+        }
       }).join('')}</ol>`;
     playersRow.appendChild(tdPlayers);
 
-    // Waitlist
     const tdWait = document.createElement('td');
     tdWait.innerHTML = `<strong>Waiting List</strong>
       <ol>${event.waitlist.map(p => `<li>${p.name}</li>`).join('')}</ol>`;
@@ -114,7 +115,7 @@ function renderPage(page) {
   document.getElementById('pageNumber').textContent = page;
 }
 
-// Navigation
+// Pagination
 document.getElementById('prevBtn').addEventListener('click', () => {
   if(currentPage > 1){
     currentPage--;
@@ -128,7 +129,7 @@ document.getElementById('nextBtn').addEventListener('click', () => {
   }
 });
 
-// Fetch data
+// Load JSON
 fetch('players.json')
   .then(res => res.json())
   .then(data => {
