@@ -105,8 +105,7 @@
 	    "courts": "",
 		"cap": 18,
 		"cost": "$25",
-
-      "players": ["TBA"],
+      "players": [],
       "waitlist": []
     },
   
