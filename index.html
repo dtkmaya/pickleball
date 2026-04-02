@@ -6,17 +6,17 @@
 <title>Pickleball @ CP</title>
 <style>
   body { font-family: Arial, sans-serif; margin: 0; background-color: #FFC0CB; }
-  header { background-color: #FFC0CB; color: white; padding: 10px 20px; display: flex; align-items: center; }
+  header { background-color: #FFC0CB; color: white; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; }
   header img { height: 40px; margin-right: 10px; }
 
-  /* Updated header title style for sporty and standout effect */
+  /* Sporty title */
   header h1 { 
     margin: 0; 
     font-size: 1.8em; 
     font-weight: 700; 
     font-family: 'Impact', 'Arial Black', sans-serif;
     color: #fff;
-    text-shadow: 2px 2px #c94f7c; /* sport energetic shadow */
+    text-shadow: 2px 2px #c94f7c; 
     letter-spacing: 1px;
   }
 
@@ -48,28 +48,29 @@
     vertical-align: top; 
   }
 
-  th { 
-    background-color: #c94f7c; 
-    color: white;
-  }
-
+  th { background-color: #c94f7c; color: white; }
   td { background-color: #fff7f9; }
 
   ol { padding-left: 20px; margin: 5px 0; }
   p { margin: 5px 0; }
+
+  .nav-arrows { font-size: 1.2em; cursor: pointer; }
+  .nav-arrows span { margin-left: 10px; margin-right: 10px; }
 </style>
 </head>
 <body>
 
 <header>
-  <img src="LogoWeb-Kangaroo.png" alt="Pickleball Logo">
-  <h1>Pickleball Weekly Game Sessions</h1>
+  <div style="display: flex; align-items: center;">
+    <img src="LogoWeb-Kangaroo.png" alt="Pickleball Logo">
+    <h1>Pickleball Weekly Game Sessions</h1>
+  </div>
+  <div class="nav-arrows" id="navArrows">
+    <!-- arrows inserted dynamically -->
+  </div>
 </header>
 
 <div class="container">
-  <p><strong>Cost:</strong> $20 – PayID: Thi L – 0421 829 872</p>
-  <p><strong>Courts:</strong> 3 | <strong>Cap:</strong> 18 players | Drinks included</p>
-
   <table id="eventsTable">
     <tr id="datesRow"></tr>
     <tr id="playersRow"></tr>
@@ -78,39 +79,71 @@
 </div>
 
 <script>
+let currentPage = 1;
+const maxColumnsPerPage = 3;
+let totalPages = 1;
+let eventsData = [];
+
+const datesRow = document.getElementById('datesRow');
+const playersRow = document.getElementById('playersRow');
+const waitlistRow = document.getElementById('waitlistRow');
+const navArrows = document.getElementById('navArrows');
+
+function renderPage(page) {
+  datesRow.innerHTML = '';
+  playersRow.innerHTML = '';
+  waitlistRow.innerHTML = '';
+
+  const startIndex = (page - 1) * maxColumnsPerPage;
+  const endIndex = Math.min(startIndex + maxColumnsPerPage, eventsData.length);
+  const pageEvents = eventsData.slice(startIndex, endIndex);
+
+  pageEvents.forEach(event => {
+    const th = document.createElement('th');
+    th.textContent = event.date;
+    datesRow.appendChild(th);
+
+    const tdPlayers = document.createElement('td');
+    tdPlayers.innerHTML = `<strong>Players ${event.players.length >= (event.cap || event.players.length) ? '(FULL)' : ''}</strong>
+      <ol>${event.players.map(p => {
+        let className = '';
+        if (p.status === 'new') className = 'player-new';
+        if (p.status === 'dropped') className = 'player-dropped';
+        if (p.status === 'dropped' && p.replacement) {
+          return `<li class="${className}">${p.name} → <span class="player-new">${p.replacement}</span></li>`;
+        }
+        return `<li class="${className}">${p.name}</li>`;
+      }).join('')}</ol>`;
+    playersRow.appendChild(tdPlayers);
+
+    const tdWait = document.createElement('td');
+    tdWait.innerHTML = `<strong>Waiting List</strong>
+      <ol>${event.waitlist.map(p => `<li>${p.name}</li>`).join('')}</ol>`;
+    waitlistRow.appendChild(tdWait);
+  });
+
+  // Update navigation arrows
+  navArrows.innerHTML = '';
+  if (currentPage > 1) {
+    const back = document.createElement('span');
+    back.textContent = '←';
+    back.onclick = () => { currentPage--; renderPage(currentPage); };
+    navArrows.appendChild(back);
+  }
+  if (currentPage < totalPages) {
+    const forward = document.createElement('span');
+    forward.textContent = '→';
+    forward.onclick = () => { currentPage++; renderPage(currentPage); };
+    navArrows.appendChild(forward);
+  }
+}
+
 fetch('players.json')
   .then(res => res.json())
   .then(data => {
-    const datesRow = document.getElementById('datesRow');
-    const playersRow = document.getElementById('playersRow');
-    const waitlistRow = document.getElementById('waitlistRow');
-
-    data.events.forEach(event => {
-      const th = document.createElement('th');
-
-      const cap = event.cap || event.players.length;
-      const cost = event.cost || "$20";
-      th.innerHTML = `${event.date}<br><small>Cap: ${cap} | Cost: ${cost}</small>`;
-      datesRow.appendChild(th);
-
-      const tdPlayers = document.createElement('td');
-      tdPlayers.innerHTML = `<strong>Players ${event.players.length >= cap ? '(FULL)' : ''}</strong>
-        <ol>${event.players.map(p => {
-          let className = '';
-          if (p.status === 'new') className = 'player-new';
-          if (p.status === 'dropped') className = 'player-dropped';
-          if (p.status === 'dropped' && p.replacement) {
-            return `<li class="${className}">${p.name} → <span class="player-new">${p.replacement}</span></li>`;
-          }
-          return `<li class="${className}">${p.name}</li>`;
-        }).join('')}</ol>`;
-      playersRow.appendChild(tdPlayers);
-
-      const tdWait = document.createElement('td');
-      tdWait.innerHTML = `<strong>Waiting List</strong>
-        <ol>${event.waitlist.map(p => `<li>${p.name}</li>`).join('')}</ol>`;
-      waitlistRow.appendChild(tdWait);
-    });
+    eventsData = data.events;
+    totalPages = Math.ceil(eventsData.length / maxColumnsPerPage);
+    renderPage(currentPage);
   })
   .catch(err => console.error('Error loading player list:', err));
 </script>
