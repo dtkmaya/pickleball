@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -9,10 +9,9 @@
   header { background-color: #FFC0CB; color: white; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; }
   header img { height: 40px; margin-right: 10px; }
 
-  /* Sporty title */
   header h1 { 
     margin: 0; 
-    font-size: 1.7em; /* slightly smaller than original */
+    font-size: 1.70em;
     font-weight: 700; 
     font-family: 'Impact', 'Arial Black', sans-serif;
     color: #fff;
@@ -32,19 +31,38 @@
     background-color: white; 
     border-radius: 8px;
     overflow: hidden;
+    font-size: 0.96em; /* slightly smaller */
   }
 
   th, td { border: 1px solid #e0e0e0; padding: 10px; vertical-align: top; }
 
-  th { background-color: #c94f7c; color: white; font-size: 1.3em; } /* slightly bigger */
-  td { background-color: #fff7f9; font-size: 1.3em; } /* slightly bigger */
+  th { background-color: #c94f7c; color: white; } 
+  td { background-color: #fff7f9; }
 
-  ol { padding-left: 20px; margin: 5px 0; }
+  ol { 
+    padding-left: 20px; 
+    margin: 5px 0; 
+    min-height: 220px; /* keeps spacing even */
+  }
+
   p { margin: 5px 0; }
 
   /* Navigation arrows */
-  .nav-arrows { font-size: 2em; font-weight: bold; color: #c94f7c; cursor: pointer; text-shadow: 1px 1px #fff; }
-  .nav-arrows span { margin-left: 10px; margin-right: 10px; }
+  .nav-arrows { 
+    position: fixed;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    font-size: 2em; 
+    font-weight: bold; 
+    color: #c94f7c; 
+    cursor: pointer; 
+    text-shadow: 1px 1px #fff; 
+  }
+
+  .nav-arrows span + span {
+    margin-left: 12px;
+  }
 
   /* Drinks included text */
   .drinks-info {
@@ -67,7 +85,6 @@
 </header>
 
 <div class="container">
-  <!-- Drinks included -->
   <div class="drinks-info">Drinks included</div>
 
   <table id="eventsTable">
@@ -97,27 +114,30 @@ function renderPage(page) {
   const endIndex = Math.min(startIndex + maxColumnsPerPage, eventsData.length);
   const pageEvents = eventsData.slice(startIndex, endIndex);
 
-  pageEvents.forEach(event => {
+  pageEvents.forEach((event, colIndex) => {
+    const courtsText = event.Courts || event.courts || '-';
+
     const th = document.createElement('th');
-    th.innerHTML = `<strong>${event.date}</strong><br>Courts: ${event.Courts || '-'}<br>Cap: ${event.cap || '-'} | Cost: ${event.cost || '-'}`;
+    th.innerHTML = `<strong>${event.date}</strong><br>Courts: ${courtsText}<br>Cap: ${event.cap || '-'} | Cost: ${event.cost || '-'}`;
     datesRow.appendChild(th);
 
     const tdPlayers = document.createElement('td');
     tdPlayers.innerHTML = `<strong>Players ${event.players.length >= (event.cap || event.players.length) ? '(FULL)' : ''}</strong>
-      <ol>${event.players.map(p => {
-        if (p.status === 'dropped' && p.replacement) {
-          // Only dropped player crossed out, replacement normal
-          return `<li>
-                    <span class="player-dropped">${p.name}</span> → 
-                    <span class="player-new" style="text-decoration: none;">${p.replacement}</span>
-                  </li>`;
-        } else {
-          let className = '';
-          if (p.status === 'new') className = 'player-new';
-          if (p.status === 'dropped') className = 'player-dropped';
-          return `<li class="${className}">${p.name}</li>`;
-        }
-      }).join('')}</ol>`;
+      <ol start="${startIndex + colIndex * maxColumnsPerPage + 1}">
+        ${event.players.map(p => {
+          if (p.status === 'dropped' && p.replacement) {
+            return `<li>
+                      <span class="player-dropped">${p.name}</span> → 
+                      <span class="player-new" style="text-decoration: none;">${p.replacement}</span>
+                    </li>`;
+          } else {
+            let className = '';
+            if (p.status === 'new') className = 'player-new';
+            if (p.status === 'dropped') className = 'player-dropped';
+            return `<li class="${className}">${p.name}</li>`;
+          }
+        }).join('')}
+      </ol>`;
     playersRow.appendChild(tdPlayers);
 
     const tdWait = document.createElement('td');
