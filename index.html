@@ -12,7 +12,7 @@
   /* Sporty title */
   header h1 { 
     margin: 0; 
-    font-size: 0.8em; /* reduced by 1 unit */
+    font-size: 1.8em; 
     font-weight: 700; 
     font-family: 'Impact', 'Arial Black', sans-serif;
     color: #fff;
@@ -36,8 +36,8 @@
 
   th, td { border: 1px solid #e0e0e0; padding: 10px; vertical-align: top; }
 
-  th { background-color: #c94f7c; color: white; font-size: 1.4em; } /* increased by 0.5 */
-  td { background-color: #fff7f9; font-size: 1.4em; } /* increased by 0.5 */
+  th { background-color: #c94f7c; color: white; font-size: 0.9em; }
+  td { background-color: #fff7f9; font-size: 0.9em; }
 
   ol { padding-left: 20px; margin: 5px 0; }
   p { margin: 5px 0; }
@@ -99,7 +99,7 @@ function renderPage(page) {
 
   pageEvents.forEach(event => {
     const th = document.createElement('th');
-    th.innerHTML = `<strong>${event.date}</strong><br>Courts: ${event.Courts || '-'}<br>Cap: ${event.cap || '-'} | Cost: ${event.cost || '-'}`;
+    th.innerHTML = `<strong>${event.date}</strong><br>Courts: ${event.court || '-'}<br>Cap: ${event.cap || '-'} | Cost: ${event.cost || '-'}`;
     datesRow.appendChild(th);
 
     const tdPlayers = document.createElement('td');
