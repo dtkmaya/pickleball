@@ -17,11 +17,11 @@
         { "name": "Kun", "status": "active" },
         { "name": "Simon", "status": "active" },
         { "name": "Thanh", "status": "dropped" },
+        { "name": "Darren", "status": "new" },
         { "name": "George", "status": "active" },
         { "name": "Dominic", "status": "active" },
         { "name": "Tit", "status": "active" },
         { "name": "Elias", "status": "active" },
-        { "name": "Darren", "status": "new" }
       ],
       "waitlist": [
         { "name": "Hung77", "status": "waiting" }
