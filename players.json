@@ -21,7 +21,7 @@
         { "name": "George", "status": "active" },
         { "name": "Dominic", "status": "active" },
         { "name": "Tit", "status": "active" },
-        { "name": "Elias", "status": "active" },
+        { "name": "Elias", "status": "active" }
       ],
       "waitlist": [
         { "name": "Hung77", "status": "waiting" }
