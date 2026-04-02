@@ -87,22 +87,30 @@ fetch('players.json?v=' + new Date().getTime()) // cache-busting
       // Players row
       const tdPlayers = document.createElement('td');
       tdPlayers.innerHTML = `<strong>Players ${isFull ? '(FULL)' : ''}</strong>
-        <ol>${event.players.map(p => {
-          if (p.status === 'dropped' && p.replacement) {
-            return `<li><span class="player-dropped">${p.name}</span> → <span class="player-new">${p.replacement}</span></li>`;
-          } else {
-            let className = '';
-            if (p.status === 'new') className = 'player-new';
-            if (p.status === 'dropped') className = 'player-dropped';
-            return `<li class="${className}">${p.name}</li>`;
-          }
-        }).join('')}</ol>`;
+        <ol>${
+          event.players.length === 0
+            ? '<li>TBA</li>'
+            : event.players.map(p => {
+                if (p.status === 'dropped' && p.replacement) {
+                  return `<li><span class="player-dropped">${p.name}</span> → <span class="player-new">${p.replacement}</span></li>`;
+                } else {
+                  let className = '';
+                  if (p.status === 'new') className = 'player-new';
+                  if (p.status === 'dropped') className = 'player-dropped';
+                  return `<li class="${className}">${p.name}</li>`;
+                }
+              }).join('')
+        }</ol>`;
       playersRow.appendChild(tdPlayers);
 
       // Waitlist row
       const tdWait = document.createElement('td');
       tdWait.innerHTML = `<strong>Waiting List</strong>
-        <ol>${event.waitlist.map(p => `<li>${p.name}</li>`).join('')}</ol>`;
+        <ol>${
+          event.waitlist.length === 0
+            ? '<li>TBA</li>'
+            : event.waitlist.map(p => `<li>${p.name}</li>`).join('')
+        }</ol>`;
       waitlistRow.appendChild(tdWait);
     });
   })
