@@ -31,7 +31,7 @@
     background-color: white; 
     border-radius: 8px;
     overflow: hidden;
-    font-size: 0.96em; /* slightly smaller */
+    font-size: 0.96em;
   }
 
   th, td { border: 1px solid #e0e0e0; padding: 10px; vertical-align: top; }
@@ -42,7 +42,7 @@
   ol { 
     padding-left: 20px; 
     margin: 5px 0; 
-    min-height: 220px; /* keeps spacing even */
+    min-height: 220px;
   }
 
   p { margin: 5px 0; }
@@ -146,17 +146,17 @@ function renderPage(page) {
     waitlistRow.appendChild(tdWait);
   });
 
-  // Navigation arrows
+  // Navigation arrows (UPDATED ONLY HERE)
   navArrows.innerHTML = '';
   if (currentPage > 1) {
     const back = document.createElement('span');
-    back.textContent = '←';
+    back.innerHTML = '<img src="arrow_left.png" style="height: 30px; cursor: pointer;">';
     back.onclick = () => { currentPage--; renderPage(currentPage); };
     navArrows.appendChild(back);
   }
   if (currentPage < totalPages) {
     const forward = document.createElement('span');
-    forward.textContent = '→';
+    forward.innerHTML = '<img src="arrow_right.png" style="height: 30px; cursor: pointer;">';
     forward.onclick = () => { currentPage++; renderPage(currentPage); };
     navArrows.appendChild(forward);
   }
