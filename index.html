@@ -77,22 +77,30 @@ fetch('players.json')
     const waitlistRow = document.getElementById('waitlistRow');
 
     data.events.forEach(event => {
+      // Date header
       const th = document.createElement('th');
       th.textContent = event.date;
       datesRow.appendChild(th);
 
       const isFull = event.players.length >= 18;
 
+      // Players row
       const tdPlayers = document.createElement('td');
       tdPlayers.innerHTML = `<strong>Players ${isFull ? '(FULL)' : ''}</strong>
         <ol>${event.players.map(p => {
-          let className = '';
-          if (p.status === 'new') className = 'player-new';
-          if (p.status === 'dropped') className = 'player-dropped';
-          return `<li class="${className}">${p.name}</li>`;
+          if (p.status === 'dropped' && p.replacement) {
+            // Dropped player with replacement
+            return `<li><span class="player-dropped">${p.name}</span> → <span class="player-new">${p.replacement}</span></li>`;
+          } else {
+            let className = '';
+            if (p.status === 'new') className = 'player-new';
+            if (p.status === 'dropped') className = 'player-dropped';
+            return `<li class="${className}">${p.name}</li>`;
+          }
         }).join('')}</ol>`;
       playersRow.appendChild(tdPlayers);
 
+      // Waitlist row
       const tdWait = document.createElement('td');
       tdWait.innerHTML = `<strong>Waiting List</strong>
         <ol>${event.waitlist.map(p => `<li>${p.name}</li>`).join('')}</ol>`;
