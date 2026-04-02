@@ -108,9 +108,13 @@ function renderPage(page) {
         let className = '';
         if (p.status === 'new') className = 'player-new';
         if (p.status === 'dropped') className = 'player-dropped';
-        if (p.status === 'dropped' && p.replacement) {
-          return `<li class="${className}">${p.name} → <span class="player-new">${p.replacement}</span></li>`;
-        }
+
+		if (p.status === 'dropped' && p.replacement) {
+		  return `<li class="player-dropped">
+					<span class="player-dropped">${p.name}</span> → 
+					<span class="player-new" style="text-decoration: none;">${p.replacement}</span>
+				  </li>`;
+		}
         return `<li class="${className}">${p.name}</li>`;
       }).join('')}</ol>`;
     playersRow.appendChild(tdPlayers);
