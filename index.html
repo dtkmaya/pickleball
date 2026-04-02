@@ -1,108 +1,139 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pickleball @ CP</title>
 <style>
-  body { font-family: Arial, sans-serif; margin: 0; background-color: #FFC0CB; }
-  header { background-color: #FFC0CB; color: white; padding: 10px 20px; display: flex; align-items: center; }
-  header img { height: 40px; margin-right: 10px; }
-  header h1 { margin: 0; font-size: 1.5em; }
-  .container { padding: 20px; }
+	body { font-family: Arial, sans-serif; margin: 0; background-color: #FFC0CB; }
+	header { background-color: #FFC0CB; color: white; padding: 10px 20px; display: flex; align-items: center; }
+	header img { height: 40px; margin-right: 10px; }
+	header h1 { margin: 0; font-size: 1.5em; }
 
-  table { 
-    width: 100%; 
-    border-collapse: collapse; 
-    margin-top: 20px; 
-    background-color: white; 
-    border-radius: 8px;
-    overflow: hidden;
-  }
+	.container { padding: 20px; }
 
-  th, td { 
-    border: 1px solid #e0e0e0; 
-    padding: 10px; 
-    vertical-align: top; 
-  }
+	table { 
+		width: 100%; 
+		border-collapse: collapse; 
+		margin-top: 20px; 
+		background-color: white; 
+		border-radius: 8px;
+		overflow: hidden;
+	}
 
-  /* Updated header colour (warm, welcoming, darker than pink) */
-  th { 
-    background-color: #c94f7c; 
-    color: white;
-  }
+	th, td { 
+		border: 1px solid #e0e0e0; 
+		padding: 10px; 
+		vertical-align: top; 
+	}
 
-  /* Slight row contrast */
-  td { background-color: #fff7f9; }
+	th { background-color: #c94f7c; color: white; }
+	td { background-color: #fff7f9; }
 
-  ol { padding-left: 20px; margin: 5px 0; }
-  p { margin: 5px 0; }
+	.player-new { color: green; font-weight: bold; }
+	.player-dropped { text-decoration: line-through; color: grey; opacity: 0.7; }
 
-  /* Player status styling */
-  .player-new {
-    color: green;
-    font-weight: bold;
-  }
+	ol { padding-left: 20px; margin: 5px 0; }
+	p { margin: 5px 0; }
 
-  .player-dropped {
-    text-decoration: line-through;
-    color: grey;
-    opacity: 0.7;
-  }
+	.pagination { text-align: center; margin-top: 15px; }
+	.pagination button { padding: 5px 12px; margin: 0 5px; font-size: 16px; cursor: pointer; border-radius: 5px; border: none; background-color: #c94f7c; color: white; }
+	.pagination span { font-weight: bold; margin: 0 8px; font-size: 16px; }
 </style>
 </head>
 <body>
 
 <header>
   <img src="LogoWeb-Kangaroo.png" alt="Pickleball Logo">
-   <h1 style="font-size: 1.4em; font-weight: 500;">
-	Pickleball Weekly Game Sessions
-   </h1>
+  <h1 style="font-size: 1.4em; font-weight: 500;">Pickleball Weekly Game Sessions</h1>
 </header>
 
 <div class="container">
-  <p><strong>Courts:</strong> 3 | Drinks included</p>
+  <div id="tableContainer"></div>
 
-  <table id="eventsTable">
-    <tr id="datesRow"></tr>
-    <tr id="playersRow"></tr>
-    <tr id="waitlistRow"></tr>
-  </table>
+  <div class="pagination">
+    <button id="prevBtn">&#8592; Prev</button>
+    <span id="pageNumber">1</span>
+    <button id="nextBtn">Next &#8594;</button>
+  </div>
 </div>
 
 <script>
+const EVENTS_PER_PAGE = 3; // max columns per page
+let currentPage = 1;
+let eventsData = [];
+
+function renderPage(page) {
+  const container = document.getElementById('tableContainer');
+  container.innerHTML = ''; // clear previous
+
+  const start = (page - 1) * EVENTS_PER_PAGE;
+  const end = start + EVENTS_PER_PAGE;
+  const eventsPage = eventsData.slice(start, end);
+
+  if(eventsPage.length === 0){
+    container.innerHTML = '<p>No sessions to display.</p>';
+    return;
+  }
+
+  const table = document.createElement('table');
+
+  const datesRow = document.createElement('tr');
+  const playersRow = document.createElement('tr');
+  const waitlistRow = document.createElement('tr');
+
+  eventsPage.forEach(event => {
+    // Date header
+    const th = document.createElement('th');
+    th.textContent = event.date;
+    datesRow.appendChild(th);
+
+    // Players
+    const tdPlayers = document.createElement('td');
+    tdPlayers.innerHTML = `<strong>Players ${event.players.length >= 18 ? '(FULL)' : ''}</strong>
+      <ol>${event.players.map(p => {
+        let className = '';
+        if(p.status === 'new') className = 'player-new';
+        if(p.status === 'dropped') className = 'player-dropped';
+        return `<li class="${className}">${p.name}${p.replacement ? ' → ' + p.replacement : ''}</li>`;
+      }).join('')}</ol>`;
+    playersRow.appendChild(tdPlayers);
+
+    // Waitlist
+    const tdWait = document.createElement('td');
+    tdWait.innerHTML = `<strong>Waiting List</strong>
+      <ol>${event.waitlist.map(p => `<li>${p.name}</li>`).join('')}</ol>`;
+    waitlistRow.appendChild(tdWait);
+  });
+
+  table.appendChild(datesRow);
+  table.appendChild(playersRow);
+  table.appendChild(waitlistRow);
+  container.appendChild(table);
+
+  document.getElementById('pageNumber').textContent = page;
+}
+
+// Navigation
+document.getElementById('prevBtn').addEventListener('click', () => {
+  if(currentPage > 1){
+    currentPage--;
+    renderPage(currentPage);
+  }
+});
+document.getElementById('nextBtn').addEventListener('click', () => {
+  if(currentPage < Math.ceil(eventsData.length / EVENTS_PER_PAGE)){
+    currentPage++;
+    renderPage(currentPage);
+  }
+});
+
+// Fetch data
 fetch('players.json')
   .then(res => res.json())
   .then(data => {
-    const datesRow = document.getElementById('datesRow');
-    const playersRow = document.getElementById('playersRow');
-    const waitlistRow = document.getElementById('waitlistRow');
-
-    data.events.forEach(event => {
-      // Header cell with date, cost, and cap
-      const th = document.createElement('th');
-      th.innerHTML = `<strong>${event.date}</strong><br>
-                      Cost: $${event.cost}<br>
-                      Cap: <span style="${event.cap <=6 ? 'color:red; font-weight:bold;' : ''}">${event.cap}</span>`;
-      datesRow.appendChild(th);
-
-      // Players list with status styling
-      const tdPlayers = document.createElement('td');
-      tdPlayers.innerHTML = `<strong>Players ${event.players.length >= event.cap ? '(FULL)' : ''}</strong>
-        <ol>${event.players.map(p => {
-          let className = '';
-          if (p.status === 'new') className = 'player-new';
-          if (p.status === 'dropped') className = 'player-dropped';
-          return `<li class="${className}">${p.name}</li>`;
-        }).join('')}</ol>`;
-      playersRow.appendChild(tdPlayers);
-
-      // Waitlist
-      const tdWait = document.createElement('td');
-      tdWait.innerHTML = `<strong>Waiting List</strong>
-        <ol>${event.waitlist.map(p => `<li>${p.name}</li>`).join('')}</ol>`;
-      waitlistRow.appendChild(tdWait);
-    });
+    eventsData = data.events;
+    renderPage(currentPage);
   })
   .catch(err => console.error('Error loading player list:', err));
 </script>

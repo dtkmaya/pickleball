@@ -2,8 +2,6 @@
   "events": [
     {
       "date": "Thursday 02/4/26, 9:30 pm – 12:00 am",
-      "cost": 20,
-      "cap": 18,
       "players": [
         { "name": "Nick", "status": "active" },
         { "name": "Michael", "status": "active" },
@@ -18,8 +16,7 @@
         { "name": "Darryn", "status": "active" },
         { "name": "Kun", "status": "active" },
         { "name": "Simon", "status": "active" },
-        { "name": "Thanh", "status": "dropped" },
-        { "name": "Darren", "status": "new" },
+        { "name": "Thanh", "status": "dropped", "replacement": "Darren" },
         { "name": "George", "status": "active" },
         { "name": "Dominic", "status": "active" },
         { "name": "Tit", "status": "active" },
@@ -31,15 +28,25 @@
     },
     {
       "date": "Friday 03/4/26, 8:00 pm – 11:00 pm",
-      "cost": 20,
-      "cap": 6,
       "players": [
         { "name": "Tuấn", "status": "active" },
         { "name": "Trinh", "status": "active" },
         { "name": "Darren Trần", "status": "active" },
         { "name": "Duy", "status": "active" },
         { "name": "Greta", "status": "active" },
-        { "name": "Hero", "status": "active" }
+        { "name": "Hero", "status": "active" },
+        { "name": "Anh Vũ", "status": "active" },
+        { "name": "Dennis", "status": "active" },
+        { "name": "Khanh", "status": "active" },
+        { "name": "Nick", "status": "active" },
+        { "name": "Tín", "status": "active" },
+        { "name": "Phát", "status": "active" },
+        { "name": "Tít", "status": "active" },
+        { "name": "George", "status": "active" },
+        { "name": "Dominic", "status": "active" },
+        { "name": "Huy Ha", "status": "active" },
+        { "name": "Tee Bee", "status": "active" },
+        { "name": "Nghĩa", "status": "active" }
       ],
       "waitlist": [
         { "name": "Superman", "status": "waiting" },
@@ -64,8 +71,6 @@
     },
     {
       "date": "Friday 03/4/26, 9:00 pm – 11:00 pm",
-      "cost": 20,
-      "cap": 6,
       "players": [
         { "name": "Khải", "status": "active" },
         { "name": "Thanh", "status": "active" },
@@ -78,8 +83,6 @@
     },
     {
       "date": "Sunday 04/4/26, 3:00 pm – 6:00 pm",
-      "cost": 20,
-      "cap": 18,
       "players": [],
       "waitlist": []
     }
