@@ -103,12 +103,12 @@ fetch('players.json?v=' + new Date().getTime()) // cache-busting
         }</ol>`;
       playersRow.appendChild(tdPlayers);
 
-      // Waitlist row
+      // Waitlist row: show only if there are waitlist players
       const tdWait = document.createElement('td');
       tdWait.innerHTML = `<strong>Waiting List</strong>
         <ol>${
           event.waitlist.length === 0
-            ? '<li>TBA</li>'
+            ? ''
             : event.waitlist.map(p => `<li>${p.name}</li>`).join('')
         }</ol>`;
       waitlistRow.appendChild(tdWait);
