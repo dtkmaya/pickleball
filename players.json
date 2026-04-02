@@ -1,25 +1,19 @@
 {
-  "players": [
-    "Nick",
-    "Michael",
-    "Jay",
-    "Superman",
-    "Anh Tuấn",
-    "Phát",
-    "Gigi",
-    "Gigi +1",
-    "Minh Hieu Vũ",
-    "Cedric",
-    "Darryn",
-    "Kun",
-    "Simon",
-    "Thanh",
-    "George",
-    "Dominic",
-    "Tit",
-    "Elias"
-  ],
-  "waitlist": [
-    "Hung77"
+  "events": [
+    {
+      "date": "Thursday 2/4/26, 9:30 pm – 12:00 am",
+      "players": ["Nick","Michael","Jay","Superman","Anh Tuấn","Phát","Gigi","Gigi +1","Minh Hieu Vũ","Cedric","Darryn","Kun","Simon","Thanh","George","Dominic","Tit","Elias"],
+      "waitlist": ["Hung77"]
+    },
+    {
+      "date": "Thursday 9/4/26, 9:30 pm – 12:00 am",
+      "players": [],
+      "waitlist": []
+    },
+    {
+      "date": "Thursday 16/4/26, 9:30 pm – 12:00 am",
+      "players": [],
+      "waitlist": []
+    }
   ]
 }

@@ -5,36 +5,57 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pickleball @ CP</title>
 <style>
-  body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.5; }
-  h1 { color: #2c3e50; }
-  h2 { color: #34495e; margin-top: 20px; }
-  .full { color: red; }
-  .waitlist { color: orange; }
-  li { margin-bottom: 4px; }
+  body { font-family: Arial, sans-serif; margin: 0; background-color: #F5F5F5; }
+  header { background-color: #005BBB; color: white; padding: 10px 20px; display: flex; align-items: center; }
+  header img { height: 40px; margin-right: 10px; }
+  header h1 { margin: 0; font-size: 1.5em; }
+  .container { padding: 20px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 20px; background-color: white; }
+  th, td { border: 1px solid #ccc; padding: 10px; vertical-align: top; }
+  th { background-color: #e6f0ff; }
+  ol { padding-left: 20px; margin: 5px 0; }
+  p { margin: 5px 0; }
 </style>
 </head>
 <body>
 
-<h1>Pickleball @ CP</h1>
-<p><strong>Date/Time:</strong> Thursday 2/4/26, 9:30 pm – 12:00 am</p>
-<p><strong>Cost:</strong> $20 – PayID: Thi L – 0421 829 872</p>
-<p><strong>Courts:</strong> 3 | <strong>Cap:</strong> 18 players | Drinks included</p>
+<header>
+  <img src="logo.png" alt="Pickleball Logo">
+  <h1>Pickleball @ CP</h1>
+</header>
 
-<h2>Players (FULL)</h2>
-<ol class="full" id="playerList"></ol>
+<div class="container">
+  <p><strong>Cost:</strong> $20 – PayID: Thi L – 0421 829 872</p>
+  <p><strong>Courts:</strong> 3 | <strong>Cap:</strong> 18 players | Drinks included</p>
 
-<h2>Waiting List</h2>
-<ol class="waitlist" id="waitList"></ol>
+  <table id="eventsTable">
+    <tr id="datesRow"></tr>
+    <tr id="playersRow"></tr>
+    <tr id="waitlistRow"></tr>
+  </table>
+</div>
 
 <script>
 fetch('players.json')
   .then(res => res.json())
   .then(data => {
-    const playerList = document.getElementById('playerList');
-    playerList.innerHTML = data.players.map(p => `<li>${p}</li>`).join('');
-    
-    const waitList = document.getElementById('waitList');
-    waitList.innerHTML = data.waitlist.map(p => `<li>${p}</li>`).join('');
+    const datesRow = document.getElementById('datesRow');
+    const playersRow = document.getElementById('playersRow');
+    const waitlistRow = document.getElementById('waitlistRow');
+
+    data.events.forEach(event => {
+      const th = document.createElement('th');
+      th.textContent = event.date;
+      datesRow.appendChild(th);
+
+      const tdPlayers = document.createElement('td');
+      tdPlayers.innerHTML = `<strong>Players (FULL)</strong><ol>${event.players.map(p => `<li>${p}</li>`).join('')}</ol>`;
+      playersRow.appendChild(tdPlayers);
+
+      const tdWait = document.createElement('td');
+      tdWait.innerHTML = `<strong>Waiting List</strong><ol>${event.waitlist.map(p => `<li>${p}</li>`).join('')}</ol>`;
+      waitlistRow.appendChild(tdWait);
+    });
   })
   .catch(err => console.error('Error loading player list:', err));
 </script>
