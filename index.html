@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -8,8 +8,30 @@
   body { font-family: Arial, sans-serif; margin: 0; background-color: #FFC0CB; }
   header { background-color: #FFC0CB; color: white; padding: 10px 20px; display: flex; align-items: center; }
   header img { height: 40px; margin-right: 10px; }
-  header h1 { margin: 0; font-size: 1.5em; }
+
+  /* Updated header title style for sporty and standout effect */
+  header h1 { 
+    margin: 0; 
+    font-size: 1.8em; 
+    font-weight: 700; 
+    font-family: 'Impact', 'Arial Black', sans-serif;
+    color: #fff;
+    text-shadow: 2px 2px #c94f7c; /* sport energetic shadow */
+    letter-spacing: 1px;
+  }
+
   .container { padding: 20px; }
+
+  .player-new {
+    color: green;
+    font-weight: bold;
+  }
+
+  .player-dropped {
+    text-decoration: line-through;
+    color: grey;
+    opacity: 0.7;
+  }
 
   table { 
     width: 100%; 
@@ -35,118 +57,62 @@
 
   ol { padding-left: 20px; margin: 5px 0; }
   p { margin: 5px 0; }
-
-  /* Player status styling */
-  .player-new {
-    color: green;
-    font-weight: bold;
-  }
-
-  .player-dropped {
-    text-decoration: line-through;
-    color: grey;
-    opacity: 0.7;
-  }
-
-  /* Pagination buttons */
-  .pagination { text-align: center; margin-top: 10px; }
-  .pagination button { font-size: 1.2em; padding: 5px 10px; margin: 0 5px; cursor: pointer; }
 </style>
 </head>
 <body>
 
 <header>
   <img src="LogoWeb-Kangaroo.png" alt="Pickleball Logo">
-   <h1 style="font-size: 1.4em; font-weight: 500;">
-	Pickleball Weekly Game Sessions
-   </h1>
+  <h1>Pickleball Weekly Game Sessions</h1>
 </header>
 
 <div class="container">
-  <p><strong>Courts:</strong> 3 | Drinks included</p>
+  <p><strong>Cost:</strong> $20 – PayID: Thi L – 0421 829 872</p>
+  <p><strong>Courts:</strong> 3 | <strong>Cap:</strong> 18 players | Drinks included</p>
 
   <table id="eventsTable">
     <tr id="datesRow"></tr>
     <tr id="playersRow"></tr>
     <tr id="waitlistRow"></tr>
   </table>
-
-  <div class="pagination">
-    <button id="prevBtn" style="display:none;">&#8592; Prev</button>
-    <button id="nextBtn">&#8594; Next</button>
-  </div>
 </div>
 
 <script>
-let currentPage = 0;
-const columnsPerPage = 3;
-let eventsData = [];
-
 fetch('players.json')
   .then(res => res.json())
   .then(data => {
-    eventsData = data.events;
-    renderPage(currentPage);
+    const datesRow = document.getElementById('datesRow');
+    const playersRow = document.getElementById('playersRow');
+    const waitlistRow = document.getElementById('waitlistRow');
+
+    data.events.forEach(event => {
+      const th = document.createElement('th');
+
+      const cap = event.cap || event.players.length;
+      const cost = event.cost || "$20";
+      th.innerHTML = `${event.date}<br><small>Cap: ${cap} | Cost: ${cost}</small>`;
+      datesRow.appendChild(th);
+
+      const tdPlayers = document.createElement('td');
+      tdPlayers.innerHTML = `<strong>Players ${event.players.length >= cap ? '(FULL)' : ''}</strong>
+        <ol>${event.players.map(p => {
+          let className = '';
+          if (p.status === 'new') className = 'player-new';
+          if (p.status === 'dropped') className = 'player-dropped';
+          if (p.status === 'dropped' && p.replacement) {
+            return `<li class="${className}">${p.name} → <span class="player-new">${p.replacement}</span></li>`;
+          }
+          return `<li class="${className}">${p.name}</li>`;
+        }).join('')}</ol>`;
+      playersRow.appendChild(tdPlayers);
+
+      const tdWait = document.createElement('td');
+      tdWait.innerHTML = `<strong>Waiting List</strong>
+        <ol>${event.waitlist.map(p => `<li>${p.name}</li>`).join('')}</ol>`;
+      waitlistRow.appendChild(tdWait);
+    });
   })
   .catch(err => console.error('Error loading player list:', err));
-
-function renderPage(page) {
-  const start = page * columnsPerPage;
-  const end = start + columnsPerPage;
-  const events = eventsData.slice(start, end);
-
-  const datesRow = document.getElementById('datesRow');
-  const playersRow = document.getElementById('playersRow');
-  const waitlistRow = document.getElementById('waitlistRow');
-
-  datesRow.innerHTML = '';
-  playersRow.innerHTML = '';
-  waitlistRow.innerHTML = '';
-
-  events.forEach(event => {
-    // Header cell with date, cost, cap
-    const th = document.createElement('th');
-    th.innerHTML = `<strong>${event.date}</strong><br>
-                    Cost: $${event.cost}<br>
-                    Cap: <span style="${event.cap <=6 ? 'color:red; font-weight:bold;' : ''}">${event.cap}</span>`;
-    datesRow.appendChild(th);
-
-    // Players
-    const tdPlayers = document.createElement('td');
-    tdPlayers.innerHTML = `<strong>Players ${event.players.length >= event.cap ? '(FULL)' : ''}</strong>
-      <ol>${event.players.map(p => {
-        let className = '';
-        if (p.status === 'new') className = 'player-new';
-        if (p.status === 'dropped') className = 'player-dropped';
-        return `<li class="${className}">${p.name}</li>`;
-      }).join('')}</ol>`;
-    playersRow.appendChild(tdPlayers);
-
-    // Waitlist
-    const tdWait = document.createElement('td');
-    tdWait.innerHTML = `<strong>Waiting List</strong>
-      <ol>${event.waitlist.map(p => `<li>${p.name}</li>`).join('')}</ol>`;
-    waitlistRow.appendChild(tdWait);
-  });
-
-  // Pagination button visibility
-  document.getElementById('prevBtn').style.display = page === 0 ? 'none' : 'inline-block';
-  document.getElementById('nextBtn').style.display = end >= eventsData.length ? 'none' : 'inline-block';
-}
-
-document.getElementById('prevBtn').addEventListener('click', () => {
-  if (currentPage > 0) {
-    currentPage--;
-    renderPage(currentPage);
-  }
-});
-
-document.getElementById('nextBtn').addEventListener('click', () => {
-  if ((currentPage + 1) * columnsPerPage < eventsData.length) {
-    currentPage++;
-    renderPage(currentPage);
-  }
-});
 </script>
 
 </body>
