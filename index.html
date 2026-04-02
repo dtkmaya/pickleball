@@ -12,7 +12,7 @@
   /* Sporty title */
   header h1 { 
     margin: 0; 
-    font-size: 1.8em; 
+    font-size: 0.8em; /* slightly smaller than original */
     font-weight: 700; 
     font-family: 'Impact', 'Arial Black', sans-serif;
     color: #fff;
@@ -36,8 +36,8 @@
 
   th, td { border: 1px solid #e0e0e0; padding: 10px; vertical-align: top; }
 
-  th { background-color: #c94f7c; color: white; font-size: 0.9em; }
-  td { background-color: #fff7f9; font-size: 0.9em; }
+  th { background-color: #c94f7c; color: white; font-size: 1.6em; } /* slightly bigger */
+  td { background-color: #fff7f9; font-size: 1.6em; } /* slightly bigger */
 
   ol { padding-left: 20px; margin: 5px 0; }
   p { margin: 5px 0; }
@@ -99,23 +99,24 @@ function renderPage(page) {
 
   pageEvents.forEach(event => {
     const th = document.createElement('th');
-    th.innerHTML = `<strong>${event.date}</strong><br>Courts: ${event.courts || '-'}<br>Cap: ${event.cap || '-'} | Cost: ${event.cost || '-'}`;
+    th.innerHTML = `<strong>${event.date}</strong><br>Courts: ${event.Courts || '-'}<br>Cap: ${event.cap || '-'} | Cost: ${event.cost || '-'}`;
     datesRow.appendChild(th);
 
     const tdPlayers = document.createElement('td');
     tdPlayers.innerHTML = `<strong>Players ${event.players.length >= (event.cap || event.players.length) ? '(FULL)' : ''}</strong>
       <ol>${event.players.map(p => {
-        let className = '';
-        if (p.status === 'new') className = 'player-new';
-        if (p.status === 'dropped') className = 'player-dropped';
-
         if (p.status === 'dropped' && p.replacement) {
-          return `<li class="player-dropped">
+          // Only dropped player crossed out, replacement normal
+          return `<li>
                     <span class="player-dropped">${p.name}</span> → 
                     <span class="player-new" style="text-decoration: none;">${p.replacement}</span>
                   </li>`;
+        } else {
+          let className = '';
+          if (p.status === 'new') className = 'player-new';
+          if (p.status === 'dropped') className = 'player-dropped';
+          return `<li class="${className}">${p.name}</li>`;
         }
-        return `<li class="${className}">${p.name}</li>`;
       }).join('')}</ol>`;
     playersRow.appendChild(tdPlayers);
 
