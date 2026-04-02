@@ -101,3 +101,38 @@
     }
   ]
 }
+    {
+      "date": "Mon 05/4/26, 3pm–6pm",
+	    "courts": "",
+		"cap": 18,
+		"cost": "$25",
+
+      "players": ["TBA"],
+      "waitlist": []
+    }
+  ]
+}
+
+    {
+      "date": "Tue 06/4/26, 3pm–6pm",
+	    "courts": "",
+		"cap": 18,
+		"cost": "$25",
+
+      "players": [],
+      "waitlist": []
+    }
+  ]
+}
+
+    {
+     "date": "Wed 07/4/26, 3pm–6pm",
+	    "courts": "",
+		"cap": 18,
+		"cost": "$20
+
+      "players": [],
+      "waitlist": []
+    }
+  ]
+}
