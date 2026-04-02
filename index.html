@@ -99,7 +99,7 @@ function renderPage(page) {
 
   pageEvents.forEach(event => {
     const th = document.createElement('th');
-    th.innerHTML = `<strong>${event.date}</strong><br>Courts: ${event.court || '-'}<br>Cap: ${event.cap || '-'} | Cost: ${event.cost || '-'}`;
+    th.innerHTML = `<strong>${event.date}</strong><br>Courts: ${event.courts || '-'}<br>Cap: ${event.cap || '-'} | Cost: ${event.cost || '-'}`;
     datesRow.appendChild(th);
 
     const tdPlayers = document.createElement('td');
