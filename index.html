@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -10,9 +10,31 @@
   header img { height: 40px; margin-right: 10px; }
   header h1 { margin: 0; font-size: 1.5em; }
   .container { padding: 20px; }
-  table { width: 100%; border-collapse: collapse; margin-top: 20px; background-color: white; }
-  th, td { border: 1px solid #ccc; padding: 10px; vertical-align: top; }
-  th { background-color: #e6f0ff; }
+
+  table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    margin-top: 20px; 
+    background-color: white; 
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  th, td { 
+    border: 1px solid #e0e0e0; 
+    padding: 10px; 
+    vertical-align: top; 
+  }
+
+  /* Updated header colour (warm, welcoming, darker than pink) */
+  th { 
+    background-color: #c94f7c; 
+    color: white;
+  }
+
+  /* Slight row contrast */
+  td { background-color: #fff7f9; }
+
   ol { padding-left: 20px; margin: 5px 0; }
   p { margin: 5px 0; }
 </style>
@@ -50,12 +72,16 @@ fetch('players.json')
       th.textContent = event.date;
       datesRow.appendChild(th);
 
+      const isFull = event.players.length >= 18;
+
       const tdPlayers = document.createElement('td');
-      tdPlayers.innerHTML = `<strong>Players (FULL)</strong><ol>${event.players.map(p => `<li>${p}</li>`).join('')}</ol>`;
+      tdPlayers.innerHTML = `<strong>Players ${isFull ? '(FULL)' : ''}</strong>
+        <ol>${event.players.map(p => `<li>${p}</li>`).join('')}</ol>`;
       playersRow.appendChild(tdPlayers);
 
       const tdWait = document.createElement('td');
-      tdWait.innerHTML = `<strong>Waiting List</strong><ol>${event.waitlist.map(p => `<li>${p}</li>`).join('')}</ol>`;
+      tdWait.innerHTML = `<strong>Waiting List</strong>
+        <ol>${event.waitlist.map(p => `<li>${p}</li>`).join('')}</ol>`;
       waitlistRow.appendChild(tdWait);
     });
   })
