@@ -98,9 +98,8 @@
 
       "players": [],
       "waitlist": []
-    }
-  ]
-}
+    },
+	
     {
       "date": "Mon 05/4/26, 3pm–6pm",
 	    "courts": "",
@@ -109,10 +108,8 @@
 
       "players": ["TBA"],
       "waitlist": []
-    }
-  ]
-}
-
+    },
+  
     {
       "date": "Tue 06/4/26, 3pm–6pm",
 	    "courts": "",
@@ -121,9 +118,7 @@
 
       "players": [],
       "waitlist": []
-    }
-  ]
-}
+    },
 
     {
      "date": "Wed 07/4/26, 3pm–6pm",
