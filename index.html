@@ -1,108 +1,20 @@
-<!DOCTYPE html> 
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pickleball @ CP</title>
+<td>
+  <strong>Players (FULL)</strong>
+  <ol>
+    <li class="player-dropped">Thanh</li>
+    <li class="player-new">Darren</li>
+  </ol>
+</td>
+
 <style>
-	body { font-family: Arial, sans-serif; margin: 0; background-color: #FFC0CB; }
-	header { background-color: #FFC0CB; color: white; padding: 10px 20px; display: flex; align-items: center; }
-	header img { height: 40px; margin-right: 10px; }
-	header h1 { margin: 0; font-size: 1.5em; }
-	.container { padding: 20px; }
+  .player-new {
+    color: green;
+    font-weight: bold;
+  }
 
-	.player-new {
-	  color: green;
-	  font-weight: bold;
-	}
-
-	.player-dropped {
-	  text-decoration: line-through;
-	  color: grey;
-	  opacity: 0.7;
-	}
-
-	table { 
-	width: 100%; 
-	border-collapse: collapse; 
-	margin-top: 20px; 
-	background-color: white; 
-	border-radius: 8px;
-	overflow: hidden;
-	}
-
-	th, td { 
-	border: 1px solid #e0e0e0; 
-	padding: 10px; 
-	vertical-align: top; 
-	}
-
-	th { 
-	background-color: #c94f7c; 
-	color: white;
-	}
-
-	td { background-color: #fff7f9; }
-
-	ol { padding-left: 20px; margin: 5px 0; }
-	p { margin: 5px 0; }
+  .player-dropped {
+    text-decoration: line-through;
+    color: grey;
+    opacity: 0.7;
+  }
 </style>
-</head>
-<body>
-
-<header>
-  <img src="LogoWeb-Kangaroo.png" alt="Pickleball Logo">
-   <h1 style="font-size: 1.4em; font-weight: 500;">
-	Pickleball Weekly Game Sessions
-   </h1>
-</header>
-
-<div class="container">
-  <p><strong>Cost:</strong> $20 – PayID: Thi L – 0421 829 872</p>
-  <p><strong>Courts:</strong> 3 | <strong>Cap:</strong> 18 players | Drinks included</p>
-
-  <table id="eventsTable">
-    <tr id="datesRow"></tr>
-    <tr id="playersRow"></tr>
-    <tr id="waitlistRow"></tr>
-  </table>
-</div>
-
-<script>
-fetch('players.json')
-  .then(res => res.json())
-  .then(data => {
-    const datesRow = document.getElementById('datesRow');
-    const playersRow = document.getElementById('playersRow');
-    const waitlistRow = document.getElementById('waitlistRow');
-
-    data.events.forEach(event => {
-      const th = document.createElement('th');
-      th.textContent = event.date;
-      datesRow.appendChild(th);
-
-      const isFull = event.players.length >= 18;
-
-      const tdPlayers = document.createElement('td');
-      tdPlayers.innerHTML = `<strong>Players ${isFull ? '(FULL)' : ''}</strong>
-        <ol>${event.players.map(p => {
-          let className = '';
-          if (p.status === 'new') className = 'player-new';
-          if (p.status === 'dropped') className = 'player-dropped';
-          return `<li class="${className}">${p.name}</li>`;
-        }).join('')}</ol>`;
-      playersRow.appendChild(tdPlayers);
-
-      const tdWait = document.createElement('td');
-      tdWait.innerHTML = `<strong>Waiting List</strong>
-        <ol>${event.waitlist.map(p => {
-          return `<li>${p.name}</li>`;
-        }).join('')}</ol>`;
-      waitlistRow.appendChild(tdWait);
-    });
-  })
-  .catch(err => console.error('Error loading player list:', err));
-</script>
-
-</body>
-</html>
