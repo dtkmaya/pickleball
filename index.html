@@ -48,21 +48,14 @@
   p { margin: 5px 0; }
 
   /* Navigation arrows */
-  .nav-arrows { 
+  .nav-left, .nav-right { 
     position: fixed;
     top: 50%;
-    right: 20px;
     transform: translateY(-50%);
-    font-size: 2em; 
-    font-weight: bold; 
-    color: #c94f7c; 
-    cursor: pointer; 
-    text-shadow: 1px 1px #fff; 
+    cursor: pointer;
   }
-
-  .nav-arrows span + span {
-    margin-left: 12px;
-  }
+  .nav-left { left: 10px; }
+  .nav-right { right: 10px; }
 
   /* Drinks included text */
   .drinks-info {
@@ -81,7 +74,6 @@
     <img src="LogoWeb-Kangaroo.png" alt="Pickleball Logo">
     <h1>Pickleball Weekly Game Sessions</h1>
   </div>
-  <div class="nav-arrows" id="navArrows"></div>
 </header>
 
 <div class="container">
@@ -94,6 +86,10 @@
   </table>
 </div>
 
+<!-- Navigation arrows -->
+<div id="navLeft" class="nav-left"></div>
+<div id="navRight" class="nav-right"></div>
+
 <script>
 let currentPage = 1;
 const maxColumnsPerPage = 3;
@@ -103,7 +99,8 @@ let eventsData = [];
 const datesRow = document.getElementById('datesRow');
 const playersRow = document.getElementById('playersRow');
 const waitlistRow = document.getElementById('waitlistRow');
-const navArrows = document.getElementById('navArrows');
+const navLeft = document.getElementById('navLeft');
+const navRight = document.getElementById('navRight');
 
 function renderPage(page) {
   datesRow.innerHTML = '';
@@ -146,19 +143,24 @@ function renderPage(page) {
     waitlistRow.appendChild(tdWait);
   });
 
-  // Navigation arrows (UPDATED ONLY HERE)
-  navArrows.innerHTML = '';
+  // Navigation arrows
+  navLeft.innerHTML = '';
+  navRight.innerHTML = '';
+
   if (currentPage > 1) {
-    const back = document.createElement('span');
-    back.innerHTML = '<img src="arrow_left.png" style="height: 30px; cursor: pointer;">';
+    const back = document.createElement('img');
+    back.src = 'arrow_left.png';
+    back.style.height = '30px';
     back.onclick = () => { currentPage--; renderPage(currentPage); };
-    navArrows.appendChild(back);
+    navLeft.appendChild(back);
   }
+
   if (currentPage < totalPages) {
-    const forward = document.createElement('span');
-    forward.innerHTML = '<img src="arrow_right.png" style="height: 30px; cursor: pointer;">';
+    const forward = document.createElement('img');
+    forward.src = 'arrow_right.png';
+    forward.style.height = '30px';
     forward.onclick = () => { currentPage++; renderPage(currentPage); };
-    navArrows.appendChild(forward);
+    navRight.appendChild(forward);
   }
 }
 
