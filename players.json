@@ -2,8 +2,30 @@
   "events": [
     {
       "date": "Thursday 02/4/26, 9:30 pm – 12:00 am",
-      "players": ["Nick","Michael","Jay","Superman","Anh Tuấn","Phát","Gigi","Gigi +1","Minh Hieu Vũ","Cedric","Darryn","Kun","Simon","Thanh","George","Dominic","Tit","Elias"],
-      "waitlist": ["Hung77"]
+      "players": [
+        { "name": "Nick", "status": "active" },
+        { "name": "Michael", "status": "active" },
+        { "name": "Jay", "status": "active" },
+        { "name": "Superman", "status": "active" },
+        { "name": "Anh Tuấn", "status": "active" },
+        { "name": "Phát", "status": "active" },
+        { "name": "Gigi", "status": "active" },
+        { "name": "Gigi +1", "status": "active" },
+        { "name": "Minh Hieu Vũ", "status": "active" },
+        { "name": "Cedric", "status": "active" },
+        { "name": "Darryn", "status": "active" },
+        { "name": "Kun", "status": "active" },
+        { "name": "Simon", "status": "active" },
+        { "name": "Thanh", "status": "dropped" },
+        { "name": "George", "status": "active" },
+        { "name": "Dominic", "status": "active" },
+        { "name": "Tit", "status": "active" },
+        { "name": "Elias", "status": "active" },
+        { "name": "Darren", "status": "new" }
+      ],
+      "waitlist": [
+        { "name": "Hung77", "status": "waiting" }
+      ]
     },
     {
       "date": "Friday 03/4/26, 9:30 pm – 12:00 am",

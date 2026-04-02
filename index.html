@@ -5,38 +5,49 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pickleball @ CP</title>
 <style>
-  body { font-family: Arial, sans-serif; margin: 0; background-color: #FFC0CB; }
-  header { background-color: #FFC0CB; color: white; padding: 10px 20px; display: flex; align-items: center; }
-  header img { height: 40px; margin-right: 10px; }
-  header h1 { margin: 0; font-size: 1.5em; }
-  .container { padding: 20px; }
+	body { font-family: Arial, sans-serif; margin: 0; background-color: #FFC0CB; }
+	header { background-color: #FFC0CB; color: white; padding: 10px 20px; display: flex; align-items: center; }
+	header img { height: 40px; margin-right: 10px; }
+	header h1 { margin: 0; font-size: 1.5em; }
+	.container { padding: 20px; }
 
-  table { 
-    width: 100%; 
-    border-collapse: collapse; 
-    margin-top: 20px; 
-    background-color: white; 
-    border-radius: 8px;
-    overflow: hidden;
-  }
+	.player-new {
+	  color: green;
+	  font-weight: bold;
+	}
 
-  th, td { 
-    border: 1px solid #e0e0e0; 
-    padding: 10px; 
-    vertical-align: top; 
-  }
+	.player-dropped {
+	  text-decoration: line-through;
+	  color: grey;
+	  opacity: 0.7;
+	}
 
-  /* Updated header colour (warm, welcoming, darker than pink) */
-  th { 
-    background-color: #c94f7c; 
-    color: white;
-  }
+	table { 
+	width: 100%; 
+	border-collapse: collapse; 
+	margin-top: 20px; 
+	background-color: white; 
+	border-radius: 8px;
+	overflow: hidden;
+	}
 
-  /* Slight row contrast */
-  td { background-color: #fff7f9; }
+	th, td { 
+	border: 1px solid #e0e0e0; 
+	padding: 10px; 
+	vertical-align: top; 
+	}
 
-  ol { padding-left: 20px; margin: 5px 0; }
-  p { margin: 5px 0; }
+	/* Updated header colour (warm, welcoming, darker than pink) */
+	th { 
+	background-color: #c94f7c; 
+	color: white;
+	}
+
+	/* Slight row contrast */
+	td { background-color: #fff7f9; }
+
+	ol { padding-left: 20px; margin: 5px 0; }
+	p { margin: 5px 0; }
 </style>
 </head>
 <body>
@@ -73,11 +84,18 @@ fetch('players.json')
       datesRow.appendChild(th);
 
       const isFull = event.players.length >= 18;
+	  
+	const tdPlayers = document.createElement('td');
+	tdPlayers.innerHTML = `<strong>Players ${isFull ? '(FULL)' : ''}</strong>
+	  <ol>${event.players.map(p => {
+		let className = '';
 
-      const tdPlayers = document.createElement('td');
-      tdPlayers.innerHTML = `<strong>Players ${isFull ? '(FULL)' : ''}</strong>
-        <ol>${event.players.map(p => `<li>${p}</li>`).join('')}</ol>`;
-      playersRow.appendChild(tdPlayers);
+		if (p.status === 'new') className = 'player-new';
+		if (p.status === 'dropped') className = 'player-dropped';
+
+		return `<li class="${className}">${p.name}</li>`;
+	  }).join('')}</ol>`;
+	playersRow.appendChild(tdPlayers);	  
 
       const tdWait = document.createElement('td');
       tdWait.innerHTML = `<strong>Waiting List</strong>
