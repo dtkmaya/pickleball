@@ -27,8 +27,58 @@
       ]
     },
     {
-      "date": "Friday 03/4/26, 9:30 pm – 12:00 am",
-      "players": [],
+      "date": "Friday 03/4/26, 8:00 pm – 11:00 pm",
+      "players": [
+        { "name": "Tuấn", "status": "active" },
+        { "name": "Trinh", "status": "active" },
+        { "name": "Darren Trần", "status": "active" },
+        { "name": "Duy", "status": "active" },
+        { "name": "Greta", "status": "active" },
+        { "name": "Hero", "status": "active" },
+        { "name": "Anh Vũ", "status": "active" },
+        { "name": "Dennis", "status": "active" },
+        { "name": "Khanh", "status": "active" },
+        { "name": "Nick", "status": "active" },
+        { "name": "Tín", "status": "active" },
+        { "name": "Phát", "status": "active" },
+        { "name": "Tít", "status": "active" },
+        { "name": "George", "status": "active" },
+        { "name": "Dominic", "status": "active" },
+        { "name": "Huy Ha", "status": "active" },
+        { "name": "Tee Bee", "status": "active" },
+        { "name": "Nghĩa", "status": "active" }
+      ],
+      "waitlist": [
+        { "name": "Superman", "status": "waiting" },
+        { "name": "Gigi", "status": "waiting" },
+        { "name": "Duc", "status": "waiting" },
+        { "name": "Nicole", "status": "waiting" },
+        { "name": "Nicole +1", "status": "waiting" },
+        { "name": "Hiếu Võ", "status": "waiting" },
+        { "name": "Luân", "status": "waiting" },
+        { "name": "Chương", "status": "waiting" },
+        { "name": "Hung77", "status": "waiting" },
+        { "name": "Huy Le", "status": "waiting" },
+        { "name": "Jay", "status": "waiting" },
+        { "name": "Julie", "status": "waiting" },
+        { "name": "Mia", "status": "waiting" },
+        { "name": "Hannah", "status": "waiting" },
+        { "name": "Hân", "status": "waiting" },
+        { "name": "anh Tuấn", "status": "waiting" },
+        { "name": "Minh Hiếu Vũ", "status": "waiting" },
+        { "name": "Alan Lowe", "status": "waiting" }
+      ]
+    },
+    {
+      "date": "Friday 03/4/26, 9:00 pm – 11:00 pm",
+      "players": [
+        { "name": "Khải", "status": "active" },
+        { "name": "Thanh", "status": "active" },
+        { "name": "Đức +1", "status": "active" },
+        { "name": "Aaron", "status": "active" },
+        { "name": "DLinh", "status": "active" },
+        { "name": "Joey", "status": "active" }
+      ],
       "waitlist": []
     },
     {
