@@ -37,13 +37,11 @@
 	vertical-align: top; 
 	}
 
-	/* Updated header colour (warm, welcoming, darker than pink) */
 	th { 
 	background-color: #c94f7c; 
 	color: white;
 	}
 
-	/* Slight row contrast */
 	td { background-color: #fff7f9; }
 
 	ol { padding-left: 20px; margin: 5px 0; }
@@ -98,9 +96,7 @@ fetch('players.json')
       const tdWait = document.createElement('td');
       tdWait.innerHTML = `<strong>Waiting List</strong>
         <ol>${event.waitlist.map(p => {
-          let className = '';
-          if (p.status === 'waiting') className = '';
-          return `<li class="${className}">${p.name}</li>`;
+          return `<li>${p.name}</li>`;
         }).join('')}</ol>`;
       waitlistRow.appendChild(tdWait);
     });
