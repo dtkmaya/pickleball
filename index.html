@@ -33,7 +33,7 @@
     border-radius: 8px;
     overflow: hidden;
     font-size: 0.99em; /* slightly smaller than before */
-  }
+  av
 
   th, td { border: 1px solid #e0e0e0; padding: 10px; vertical-align: top; }
 
@@ -44,8 +44,23 @@
   p { margin: 5px 0; }
 
   /* Navigation arrows */
-  .nav-arrows { font-size: 2em; font-weight: bold; color: #c94f7c; cursor: pointer; text-shadow: 1px 1px #fff; }
-  .nav-arrows span { margin-left: 10px; margin-right: 10px; }
+  .nav-arrows { 
+	  font-size: 2em; 
+	  font-weight: bold; 
+	  color: #c94f7c; 
+	  cursor: pointer; 
+	  text-shadow: 1px 1px #fff;
+
+	  position: fixed;      /* key change */
+	  top: 50%;             /* vertical center */
+	  right: 20px;          /* keep it on the right */
+	  transform: translateY(-50%); /* perfect centering */
+	  z-index: 1000;        /* stay above table */
+ }
+
+  .nav-arrows span + span {
+      margin-left: 12px;
+   }
 
   /* Drinks included text */
   .drinks-info {
