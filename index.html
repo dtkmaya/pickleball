@@ -101,36 +101,47 @@ const maxColumnsPerPage = 3;
 let totalPages = 1;
 let eventsData = [];
 
+const SESSION_SHEET_URL = 'session1.csv'; // replace with your Google Sheet CSV link
+const PLAYER_SHEET_URL = 'YOUR_PLAYER_SHEET_CSV_URL';   // replace with your Google Sheet CSV link
+
 const datesRow = document.getElementById('datesRow');
 const playersRow = document.getElementById('playersRow');
 const waitlistRow = document.getElementById('waitlistRow');
 const navLeft = document.getElementById('navLeft');
 const navRight = document.getElementById('navRight');
 
+// Convert CSV to JSON
+function csvToJson(csv) {
+  const lines = csv.split('\n').filter(l => l.trim() !== '');
+  const headers = lines[0].split(',').map(h => h.trim());
+  return lines.slice(1).map(line => {
+    const data = line.split(',');
+    let obj = {};
+    headers.forEach((h, i) => obj[h] = data[i]?.trim());
+    return obj;
+  });
+}
+
 // Helper: check if event date/time has passed
-function isExpired(eventDateStr) {
+function isExpired(dateStr, timeStr) {
   try {
-    // Format: "Thurs 02/4/26, 9:30pm–12:00am"
-    const parts = eventDateStr.split(',');
-    if (parts.length < 2) return false;
-
-    const datePart = parts[0].trim().split(' ')[1]; // "02/4/26"
-    const timePart = parts[1].trim().split('–')[0]; // "9:30pm"
-
-    const [day, month, year] = datePart.split('/').map(Number);
-    let [time, meridiem] = timePart.match(/(\d{1,2}:\d{2})(am|pm)/i).slice(1);
-    let [hours, minutes] = time.split(':').map(Number);
+    // dateStr: "02/4/26", timeStr: "9:30pm–12:00am"
+    const [startTime] = timeStr.split('–');
+    const [hoursMinutes, meridiem] = startTime.match(/(\d{1,2}:\d{0,2})(am|pm)/i).slice(1);
+    let [hours, minutes] = hoursMinutes.split(':').map(Number);
+    if (isNaN(minutes)) minutes = 0;
     if (meridiem.toLowerCase() === 'pm' && hours !== 12) hours += 12;
     if (meridiem.toLowerCase() === 'am' && hours === 12) hours = 0;
 
+    const [day, month, year] = dateStr.split('/').map(Number);
     const eventDate = new Date(2000 + year, month - 1, day, hours, minutes);
-    const now = new Date();
-    return eventDate < now;
+    return eventDate < new Date();
   } catch {
     return false;
   }
 }
 
+// Render page
 function renderPage(page) {
   datesRow.innerHTML = '';
   playersRow.innerHTML = '';
@@ -141,11 +152,11 @@ function renderPage(page) {
   const pageEvents = eventsData.slice(startIndex, endIndex);
 
   pageEvents.forEach(event => {
-    const courtsText = event.Courts || event.courts || '-';
-    const expired = isExpired(event.date);
+    const courtsText = event.courts || '-';
+    const expired = isExpired(event.date, event.time);
 
     const th = document.createElement('th');
-    th.innerHTML = `<strong>${event.date}</strong><br>Courts: ${courtsText}<br>Cap: ${event.cap || '-'} | Cost: ${event.cost || '-'}`;
+    th.innerHTML = `<strong>${event.date}, ${event.time}</strong><br>Courts: ${courtsText}<br>Cap: ${event.cap || '-'} | Cost: ${event.cost || '-'}`;
     if (expired) th.classList.add('expired');
     datesRow.appendChild(th);
 
@@ -195,14 +206,41 @@ function renderPage(page) {
   }
 }
 
-fetch('players.json')
-  .then(res => res.json())
-  .then(data => {
-    eventsData = data.events;
-    totalPages = Math.ceil(eventsData.length / maxColumnsPerPage);
-    renderPage(currentPage);
-  })
-  .catch(err => console.error('Error loading player list:', err));
+// Fetch Sheets and build eventsData
+Promise.all([
+  fetch(SESSION_SHEET_URL).then(res => res.text()),
+  fetch(PLAYER_SHEET_URL).then(res => res.text())
+]).then(([sessionCsv, playerCsv]) => {
+  const sessions = csvToJson(sessionCsv);
+  const players = csvToJson(playerCsv);
+
+  eventsData = sessions.map(session => {
+    const sessionPlayers = players.filter(p => p.session_id === session.session_id);
+
+    return {
+      date: session.date,
+      time: session.time,
+      courts: session.courts,
+      cap: Number(session.cap),
+      cost: session.cost,
+
+      players: sessionPlayers
+        .filter(p => p.list_type === 'player')
+        .map(p => ({
+          name: p.name,
+          status: p.status,
+          replacement: p.replacement
+        })),
+
+      waitlist: sessionPlayers
+        .filter(p => p.list_type === 'waitlist')
+        .map(p => ({ name: p.name }))
+    };
+  });
+
+  totalPages = Math.ceil(eventsData.length / maxColumnsPerPage);
+  renderPage(currentPage);
+}).catch(err => console.error('Error loading sheets:', err));
 </script>
 
 </body>
