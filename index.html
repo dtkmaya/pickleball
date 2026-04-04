@@ -5,222 +5,161 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pickleball @ CP</title>
 
-<!-- PapaParse -->
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
 <style>
-  body { font-family: Arial, sans-serif; margin: 0; background-color: #FFC0CB; }
+body { font-family: Arial, sans-serif; margin: 0; background-color: #FFC0CB; }
 
-  header { background-color: #FFC0CB; color: white; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; }
-  header img { height: 40px; margin-right: 10px; }
+/* Header */
+header {
+  background-color: #FFC0CB;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+}
+header h1 {
+  font-family: Impact, sans-serif;
+  color: white;
+  text-shadow: 2px 2px #c94f7c;
+  margin: 0;
+}
 
-  header h1 { 
-    margin: 0; 
-    font-size: 1.70em;
-    font-weight: 700; 
-    font-family: 'Impact', sans-serif;
-    color: #fff;
-    text-shadow: 2px 2px #c94f7c; 
-    letter-spacing: 1px;
-  }
+/* Banner */
+.banner img {
+  width: 100%;
+  max-width: 803px;
+  display: block;
+  margin: auto;
+}
 
-  .container { padding: 20px; }
+/* Card */
+.card {
+  background: white;
+  margin: 15px;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  text-align: center;
+}
 
-  .info-text {
-    font-family: 'Impact', sans-serif;
-    font-size: 1.0em;
-    color: #c94f7c;
-    text-shadow: 0.5px 0.5px #fff;
-    margin-bottom: 5px;
-  }
+/* Button */
+.toggle-btn {
+  font-family: Impact, sans-serif;
+  font-size: 1.2em;
+  padding: 10px 20px;
+  background-color: #c94f7c;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
 
-  table { 
-    width: 100%; 
-    border-collapse: collapse; 
-    margin-top: 10px; 
-    background-color: white; 
-    border-radius: 8px;
-    overflow: hidden;
-    font-size: 0.96em;
-  }
+/* Info text */
+.info-text {
+  font-family: Impact, sans-serif;
+  font-size: 1.1em;
+  color: #c94f7c;
+  margin: 5px 0;
+}
 
-  th, td { border: 1px solid #e0e0e0; padding: 10px; vertical-align: top; }
-  th { background-color: #c94f7c; color: white; } 
-  td { background-color: #fff7f9; }
+/* Table */
+.container { padding: 0 15px 20px; }
 
-  .expired { background-color: #d3d3d3 !important; color: #888 !important; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+}
+th, td { padding: 10px; border: 1px solid #eee; }
+th { background: #c94f7c; color: white; }
+td { background: #fff7f9; }
 
-  ol { padding-left: 20px; margin: 5px 0; min-height: 220px; }
+.expired { background: #ddd !important; color: #888 !important; }
 
-  .nav-left, .nav-right { position: fixed; top: 50%; transform: translateY(-50%); cursor: pointer; }
-  .nav-left { left: 10px; }
-  .nav-right { right: 10px; }
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 15px;
+  font-size: 0.9em;
+}
+
+.footer a {
+  color: #c94f7c;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.footer img {
+  height: 25px;
+  margin-top: 8px;
+}
 </style>
 </head>
 
 <body>
 
 <header>
-  <div style="display: flex; align-items: center;">
-    <img src="LogoWeb-Kangaroo.png">
-    <h1>Pickleball Weekly Game Sessions</h1>
-  </div>
+  <h1>Pickleball Weekly Game Sessions</h1>
 </header>
 
-<!-- ✅ Banner -->
-<div style="text-align:center; background-color:#FFC0CB;">
-  <img src="banner.png" alt="Banner" style="width:100%; max-width:803px; height:auto;">
+<!-- Banner -->
+<div class="banner">
+  <img src="banner.png">
 </div>
 
-<!-- ✅ Toggle Button -->
-<div style="text-align:center; margin: 10px 0;">
-  <button onclick="toggleSection()" style="
-    font-family: Impact, sans-serif;
-    font-size: 1.0em;
-    padding: 10px 20px;
-    background-color: #c94f7c;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;">
-    Upcoming Sessions ▼
-  </button>
-</div>
-
-<!-- ✅ Wrap existing content -->
-<div id="sessionSection" class="container">
+<!-- Info Card -->
+<div class="card">
+  <button class="toggle-btn" onclick="toggleSection()">Upcoming Sessions ▼</button>
 
   <div class="info-text">Drinks included</div>
   <div class="info-text">PayID Thi L: 0421 829 972</div>
+  <div class="info-text">Organizer: Maggie</div>
+</div>
 
-  <table id="eventsTable">
+<!-- Sessions -->
+<div id="sessionSection" class="container">
+
+  <table>
     <tr id="datesRow"></tr>
     <tr id="playersRow"></tr>
     <tr id="waitlistRow"></tr>
   </table>
+
 </div>
 
-<div id="navLeft" class="nav-left"></div>
-<div id="navRight" class="nav-right"></div>
+<!-- Footer -->
+<div class="footer">
+  <div>
+    <a href="https://www.google.com/maps/search/?api=1&query=Central+Pickleball+Bankstown" target="_blank">
+      📍 Get Directions to Central Pickleball Bankstown
+    </a>
+  </div>
+
+  <div>© LZGroup</div>
+  <img src="logo_lzgroup.png" alt="LZGroup Logo">
+</div>
 
 <script>
-let currentPage = 1;
-const maxColumnsPerPage = 3;
-let totalPages = 1;
-let eventsData = [];
-
-
-const SESSION_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRu60f6E2q_EbTv3QGvhHImUnpZbJj6106zEb1eN9uGJx_mOsOQRq27DA8V1AxXL5ld9yOVJ-RU3e3-/pub?output=csv'; // replace with your Google Sheet CSV link
-
-const PLAYER_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ6LUO1jogAVhhEdNY0QiwMgkyVNoR7QFCmxWcUFsQ063ohf3wcJS_QMOdx1iHmjxjazMwWe_cIaQ-K/pub?output=csv';   // replace with your Google Sheet CSV link
-
-
-const datesRow = document.getElementById('datesRow');
-const playersRow = document.getElementById('playersRow');
-const waitlistRow = document.getElementById('waitlistRow');
-const navLeft = document.getElementById('navLeft');
-const navRight = document.getElementById('navRight');
-
-// CSV parser
-function csvToJson(csv) {
-  return Papa.parse(csv, {
-    header: true,
-    skipEmptyLines: true
-  }).data.map(row => {
-    if (row.courts) row.courts = row.courts.replace(/^"+|"+$/g, '');
-    return row;
-  });
-}
-
-// Expiry check
-function isExpired(dateStr, timeStr) {
-  try {
-    const [day, month, year] = dateStr.split('/').map(Number);
-    let hours = 0, minutes = 0;
-
-    if (timeStr && timeStr !== '-') {
-      const [startTime] = timeStr.split('–');
-      const match = startTime.match(/(\d{1,2}):?(\d{0,2})?(am|pm)/i);
-      if (match) {
-        hours = parseInt(match[1]);
-        minutes = parseInt(match[2]) || 0;
-        const meridiem = match[3].toLowerCase();
-        if (meridiem === 'pm' && hours !== 12) hours += 12;
-        if (meridiem === 'am' && hours === 12) hours = 0;
-      }
-    }
-
-    const fullYear = year < 100 ? 2000 + year : year;
-    const eventDate = new Date(fullYear, month - 1, day, hours, minutes);
-
-    return eventDate < new Date();
-  } catch {
-    return false;
-  }
-}
-
 // Toggle
 function toggleSection() {
   const section = document.getElementById('sessionSection');
   section.style.display = (section.style.display === 'none') ? 'block' : 'none';
 }
 
-// Render
-function renderPage(page) {
-  datesRow.innerHTML = '';
-  playersRow.innerHTML = '';
-  waitlistRow.innerHTML = '';
-
-  const startIndex = (page - 1) * maxColumnsPerPage;
-  const endIndex = Math.min(startIndex + maxColumnsPerPage, eventsData.length);
-  const pageEvents = eventsData.slice(startIndex, endIndex);
-
-  pageEvents.forEach(event => {
-    const courtsText = event.courts || '-';
-    const expired = isExpired(event.date, event.time);
-
-    const th = document.createElement('th');
-    th.innerHTML = `<strong>${event.date}, ${event.time}</strong><br>Courts: ${courtsText}<br>Cap: ${event.cap || '-'} | Cost: ${event.cost || '-'}`;
-    if (expired) th.classList.add('expired');
-    datesRow.appendChild(th);
-
-    const tdPlayers = document.createElement('td');
-    tdPlayers.innerHTML = `<strong>Players</strong><ol>${event.players.map(p => `<li>${p.name}</li>`).join('')}</ol>`;
-    if (expired) tdPlayers.classList.add('expired');
-    playersRow.appendChild(tdPlayers);
-
-    const tdWait = document.createElement('td');
-    tdWait.innerHTML = `<strong>Waiting List</strong><ol>${event.waitlist.map(p => `<li>${p.name}</li>`).join('')}</ol>`;
-    if (expired) tdWait.classList.add('expired');
-    waitlistRow.appendChild(tdWait);
-  });
+// CSV
+function csvToJson(csv) {
+  return Papa.parse(csv, { header: true, skipEmptyLines: true }).data;
 }
 
-// Load
-Promise.all([
-  fetch(SESSION_SHEET_URL).then(res => res.text()),
-  fetch(PLAYER_SHEET_URL).then(res => res.text())
-]).then(([sessionCsv, playerCsv]) => {
-  const sessions = csvToJson(sessionCsv);
-  const players = csvToJson(playerCsv);
-
-  eventsData = sessions.map(session => {
-    const sessionPlayers = players.filter(p => p.session_id === session.session_id);
-
-    return {
-      date: session.date,
-      time: session.time,
-      courts: session.courts,
-      cap: Number(session.cap),
-      cost: session.cost,
-      players: sessionPlayers.filter(p => p.list_type === 'player'),
-      waitlist: sessionPlayers.filter(p => p.list_type === 'waitlist')
-    };
-  });
-
-  totalPages = Math.ceil(eventsData.length / maxColumnsPerPage);
-  renderPage(currentPage);
-});
+// Expiry
+function isExpired(dateStr) {
+  const [d,m,y] = dateStr.split('/');
+  const date = new Date(2000 + Number(y), m-1, d);
+  return date < new Date();
+}
 </script>
 
 </body>
