@@ -126,18 +126,27 @@ function csvToJson(csv) {
   });
 }
 
-// Helper: check if event date/time has passed
+// --- Robust isExpired function ---
 function isExpired(dateStr, timeStr) {
   try {
-    const [startTime] = timeStr.split('–');
-    const [hoursMinutes, meridiem] = startTime.match(/(\d{1,2}:\d{0,2})(am|pm)/i).slice(1);
-    let [hours, minutes] = hoursMinutes.split(':').map(Number);
-    if (isNaN(minutes)) minutes = 0;
-    if (meridiem.toLowerCase() === 'pm' && hours !== 12) hours += 12;
-    if (meridiem.toLowerCase() === 'am' && hours === 12) hours = 0;
-
     const [day, month, year] = dateStr.split('/').map(Number);
-    const eventDate = new Date(2000 + year, month - 1, day, hours, minutes);
+    let hours = 0, minutes = 0;
+
+    if (timeStr && timeStr !== '-') {
+      const [startTime] = timeStr.split('–');
+      const match = startTime.match(/(\d{1,2}):?(\d{0,2})?(am|pm)/i);
+      if (match) {
+        hours = parseInt(match[1]);
+        minutes = parseInt(match[2]) || 0;
+        const meridiem = match[3].toLowerCase();
+        if (meridiem === 'pm' && hours !== 12) hours += 12;
+        if (meridiem === 'am' && hours === 12) hours = 0;
+      }
+    }
+
+    const fullYear = year < 100 ? 2000 + year : year; // handle 2-digit years
+    const eventDate = new Date(fullYear, month - 1, day, hours, minutes);
+
     return eventDate < new Date();
   } catch {
     return false;
