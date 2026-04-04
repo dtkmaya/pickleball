@@ -17,13 +17,21 @@
     margin: 0; 
     font-size: 1.70em;
     font-weight: 700; 
-    font-family: 'Impact', 'Arial Black', sans-serif;
+    font-family: 'Impact', sans-serif;
     color: #fff;
     text-shadow: 2px 2px #c94f7c; 
     letter-spacing: 1px;
   }
 
   .container { padding: 20px; }
+
+  .info-text {
+    font-family: 'Impact', sans-serif;
+    font-size: 1.2em;
+    color: #c94f7c;
+    text-shadow: 1px 1px #fff;
+    margin-bottom: 5px;
+  }
 
   .player-new { color: green; font-weight: bold; }
   .player-dropped { text-decoration: line-through; color: grey; opacity: 0.7; }
@@ -65,23 +73,6 @@
   }
   .nav-left { left: 10px; }
   .nav-right { right: 10px; }
-
-  /* Drinks included text */
-  .drinks-info {
-    font-family: 'Impact', 'Arial Black', sans-serif;
-    font-size: 1.1em;
-    color: #c94f7c;
-    text-shadow: 1px 1px #fff;
-    margin-bottom: 4px;
-  }
-
-  .payid-info {
-    font-family: 'Impact', 'Arial Black', sans-serif;
-    font-size: 1.1em; /* slightly smaller */
-    color: #c94f7c;
-    text-shadow: 1px 1px #fff;
-    margin-bottom: 10px;
-  }
 </style>
 </head>
 <body>
@@ -94,8 +85,8 @@
 </header>
 
 <div class="container">
-  <div class="drinks-info">Drinks included</div>
-  <div class="payid-info">PayID Thi L: 0421 829 972</div>
+  <div class="info-text">Drinks included</div>
+  <div class="info-text">PayID Thi L: 0421 829 972</div>
 
   <table id="eventsTable">
     <tr id="datesRow"></tr>
@@ -128,7 +119,11 @@ function csvToJson(csv) {
   return Papa.parse(csv, {
     header: true,
     skipEmptyLines: true
-  }).data;
+  }).data.map(row => {
+    // Strip quotes from courts field if present
+    if (row.courts) row.courts = row.courts.replace(/^"+|"+$/g, '');
+    return row;
+  });
 }
 
 // Helper: check if event date/time has passed
