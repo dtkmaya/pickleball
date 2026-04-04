@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pickleball @ CP</title>
+
+<!-- PapaParse for proper CSV parsing -->
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
 <style>
   body { font-family: Arial, sans-serif; margin: 0; background-color: #FFC0CB; }
   header { background-color: #FFC0CB; color: white; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; }
@@ -65,7 +69,15 @@
   /* Drinks included text */
   .drinks-info {
     font-family: 'Impact', 'Arial Black', sans-serif;
-    font-size: 1.2em;
+    font-size: 1.1em;
+    color: #c94f7c;
+    text-shadow: 1px 1px #fff;
+    margin-bottom: 4px;
+  }
+
+  .payid-info {
+    font-family: 'Impact', 'Arial Black', sans-serif;
+    font-size: 1.1em; /* slightly smaller */
     color: #c94f7c;
     text-shadow: 1px 1px #fff;
     margin-bottom: 10px;
@@ -83,6 +95,7 @@
 
 <div class="container">
   <div class="drinks-info">Drinks included</div>
+  <div class="payid-info">PayID Thi L: 0421 829 972</div>
 
   <table id="eventsTable">
     <tr id="datesRow"></tr>
@@ -101,9 +114,8 @@ const maxColumnsPerPage = 3;
 let totalPages = 1;
 let eventsData = [];
 
-const SESSION_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTirsSiBtc0LCzudvZzT92WZY74cdsLjO_KTPALFNYwmGWjgeoB86iOoiRVbp14Ij4Fs7TgFkb99yQd/pub?gid=0&single=true&output=csv'; // replace with your Google Sheet CSV link
-
-const PLAYER_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSDAydPfDdKWP1mESRNYJxSoRV4llsAb4-wSV_gpzmVxqrx6yraMsvssY1sfU7TjQllXsgKkpfKAPGF/pub?output=csv';   // replace with your Google Sheet CSV link
+const SESSION_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTirsSiBtc0LCzudvZzT92WZY74cdsLjO_KTPALFNYwmGWjgeoB86iOoiRVbp14Ij4Fs7TgFkb99yQd/pub?gid=0&single=true&output=csv';
+const PLAYER_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSDAydPfDdKWP1mESRNYJxSoRV4llsAb4-wSV_gpzmVxqrx6yraMsvssY1sfU7TjQllXsgKkpfKAPGF/pub?output=csv';
 
 const datesRow = document.getElementById('datesRow');
 const playersRow = document.getElementById('playersRow');
@@ -111,22 +123,17 @@ const waitlistRow = document.getElementById('waitlistRow');
 const navLeft = document.getElementById('navLeft');
 const navRight = document.getElementById('navRight');
 
-// Convert CSV to JSON
+// --- Updated csvToJson using PapaParse ---
 function csvToJson(csv) {
-  const lines = csv.split('\n').filter(l => l.trim() !== '');
-  const headers = lines[0].split(',').map(h => h.trim());
-  return lines.slice(1).map(line => {
-    const data = line.split(',');
-    let obj = {};
-    headers.forEach((h, i) => obj[h] = data[i]?.trim());
-    return obj;
-  });
+  return Papa.parse(csv, {
+    header: true,
+    skipEmptyLines: true
+  }).data;
 }
 
 // Helper: check if event date/time has passed
 function isExpired(dateStr, timeStr) {
   try {
-    // dateStr: "02/4/26", timeStr: "9:30pm–12:00am"
     const [startTime] = timeStr.split('–');
     const [hoursMinutes, meridiem] = startTime.match(/(\d{1,2}:\d{0,2})(am|pm)/i).slice(1);
     let [hours, minutes] = hoursMinutes.split(':').map(Number);
