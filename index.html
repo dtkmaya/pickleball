@@ -4,154 +4,85 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pickleball @ CP</title>
-
-<!-- Font -->
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
-
 <style>
-body {
-  font-family: 'Outfit', sans-serif;
-  margin: 0;
-  background: #FFC0CB;
-}
+  body { font-family: Arial, sans-serif; margin: 0; background-color: #FFC0CB; }
+  header { background-color: #FFC0CB; color: white; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; }
 
-/* HEADER */
-header {
-  padding: 15px;
-  text-align: center;
-  color: white;
-  font-weight: 600;
-  font-size: 1.5em;
-}
+  header h1 { 
+    margin: 0; 
+    font-size: 1.70em;
+    font-weight: 700; 
+    font-family: 'Impact', 'Arial Black', sans-serif;
+    color: #fff;
+    text-shadow: 2px 2px #c94f7c; 
+    letter-spacing: 1px;
+  }
 
-/* HERO */
-.hero {
-  background: white;
-  margin: 15px;
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 5px 12px rgba(0,0,0,0.15);
-}
+  .container { padding: 20px; }
 
-.hero h2 {
-  margin: 0;
-}
+  .player-new { color: green; font-weight: bold; }
+  .player-dropped { text-decoration: line-through; color: grey; opacity: 0.7; }
 
-.hero p {
-  color: #666;
-}
+  table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    margin-top: 10px; 
+    background-color: white; 
+    border-radius: 8px;
+    overflow: hidden;
+    font-size: 0.96em;
+  }
 
-/* CARDS */
-.card-row {
-  display: flex;
-  gap: 10px;
-  margin-top: 15px;
-}
+  th, td { border: 1px solid #e0e0e0; padding: 10px; vertical-align: top; }
 
-.card {
-  flex: 1;
-  background: #fff7f9;
-  padding: 10px;
-  border-radius: 10px;
-  text-align: center;
-}
+  th { background-color: #c94f7c; color: white; } 
+  td { background-color: #fff7f9; }
 
-/* BUTTONS */
-.btn {
-  display: inline-block;
-  margin-top: 10px;
-  padding: 10px 15px;
-  background: #c94f7c;
-  color: white;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 500;
-}
+  .expired { 
+    background-color: #d3d3d3 !important; 
+    color: #888 !important; 
+  }
 
-/* INFO TEXT */
-.info {
-  text-align: center;
-  margin-top: 10px;
-  color: #c94f7c;
-  font-weight: 600;
-}
+  ol { 
+    padding-left: 20px; 
+    margin: 5px 0; 
+    min-height: 220px;
+  }
 
-/* TABLE */
-.container { padding: 15px; }
+  p { margin: 5px 0; }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: white;
-  border-radius: 10px;
-  overflow: hidden;
-}
+  .nav-left, .nav-right { 
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
+  .nav-left { left: 10px; }
+  .nav-right { right: 10px; }
 
-th, td { padding: 10px; border: 1px solid #eee; }
-th { background: #c94f7c; color: white; }
-td { background: #fff7f9; }
-
-.expired {
-  background: #ddd !important;
-  color: #888 !important;
-}
-
-/* NAV */
-.nav-left, .nav-right {
-  position: fixed;
-  top: 50%;
-  cursor: pointer;
-}
-.nav-left { left: 10px; }
-.nav-right { right: 10px; }
-
-/* FOOTER */
-.footer {
-  text-align: center;
-  padding: 20px;
-}
-.footer a {
-  color: #c94f7c;
-  font-weight: 600;
-}
+  .drinks-info {
+    font-family: 'Impact', 'Arial Black', sans-serif;
+    font-size: 1.2em;
+    color: #c94f7c;
+    text-shadow: 1px 1px #fff;
+    margin-bottom: 10px;
+  }
 </style>
 </head>
 
 <body>
 
-<header>Pickleball Weekly Game Sessions</header>
-
-<!-- HERO -->
-<div class="hero">
-  <h2>You're Invited 🎾</h2>
-  <p>Weekly friendly pickleball sessions. Come join us!</p>
-
-  <div class="card-row">
-    <div class="card">
-      <div>Date</div>
-      <strong id="heroDate">-</strong>
-    </div>
-    <div class="card">
-      <div>Time</div>
-      <strong id="heroTime">-</strong>
-    </div>
-    <div class="card">
-      <div>Location</div>
-      <strong>Bankstown</strong>
-    </div>
+<header>
+  <div style="display: flex; align-items: center;">
+    <img src="Web-Kangaroologo.png" alt="Logo" style="height:40px; margin-right:10px;">
+    <h1>Pickleball Weekly Game Sessions</h1>
   </div>
+</header>
 
-  <div style="text-align:center;">
-    <a href="#" class="btn" onclick="toggleSection()">Upcoming Sessions</a>
-    <a href="https://docs.google.com/forms" target="_blank" class="btn">RSVP</a>
-  </div>
+<div class="container">
+  <div class="drinks-info">Drinks included</div>
 
-  <div class="info">Drinks included | PayID Thi L: 0421 829 972 | Organizer: Maggie</div>
-</div>
-
-<!-- TABLE -->
-<div id="sessionSection" class="container">
-  <table>
+  <table id="eventsTable">
     <tr id="datesRow"></tr>
     <tr id="playersRow"></tr>
     <tr id="waitlistRow"></tr>
@@ -161,104 +92,171 @@ td { background: #fff7f9; }
 <div id="navLeft" class="nav-left"></div>
 <div id="navRight" class="nav-right"></div>
 
-<!-- FOOTER -->
-<div class="footer">
-  <a href="https://www.google.com/maps/search/?api=1&query=Central+Pickleball+Bankstown" target="_blank">
-    📍 Get Directions
-  </a>
-  <div>© LZGroup</div>
-</div>
-
 <script>
 let currentPage = 1;
 const maxColumnsPerPage = 3;
+let totalPages = 1;
 let eventsData = [];
 
-const SESSION_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRu60f6E2q_EbTv3QGvhHImUnpZbJj6106zEb1eN9uGJx_mOsOQRq27DA8V1AxXL5ld9yOVJ-RU3e3-/pub?output=csv'; // replace with your Google Sheet CSV link
-const PLAYER_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ6LUO1jogAVhhEdNY0QiwMgkyVNoR7QFCmxWcUFsQ063ohf3wcJS_QMOdx1iHmjxjazMwWe_cIaQ-K/pub?output=csv';   // replace with your Google Sheet CSV link
-
+const SESSION_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRu60f6E2q_EbTv3QGvhHImUnpZbJj6106zEb1eN9uGJx_mOsOQRq27DA8V1AxXL5ld9yOVJ-RU3e3-/pub?output=csv';
+const PLAYER_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ6LUO1jogAVhhEdNY0QiwMgkyVNoR7QFCmxWcUFsQ063ohf3wcJS_QMOdx1iHmjxjazMwWe_cIaQ-K/pub?output=csv';
 
 const datesRow = document.getElementById('datesRow');
 const playersRow = document.getElementById('playersRow');
 const waitlistRow = document.getElementById('waitlistRow');
+const navLeft = document.getElementById('navLeft');
+const navRight = document.getElementById('navRight');
 
-// CSV
+// ✅ FIXED CSV parser (handles commas inside quotes)
 function csvToJson(csv) {
   const lines = csv.split('\n').filter(l => l.trim() !== '');
-  const headers = lines[0].split(',');
+  const headers = lines[0].split(',').map(h => h.trim());
+
   return lines.slice(1).map(line => {
-    const data = line.split(',');
+    const data = [];
+    let current = '';
+    let inQuotes = false;
+
+    for (let char of line) {
+      if (char === '"') {
+        inQuotes = !inQuotes;
+      } else if (char === ',' && !inQuotes) {
+        data.push(current);
+        current = '';
+      } else {
+        current += char;
+      }
+    }
+    data.push(current);
+
     let obj = {};
-    headers.forEach((h, i) => obj[h] = data[i]);
+    headers.forEach((h, i) => {
+      let value = data[i]?.trim();
+      if (value) value = value.replace(/^"+|"+$/g, '');
+      obj[h] = value;
+    });
+
     return obj;
   });
 }
 
-// Expired
-function isExpired(dateStr) {
-  const [d,m,y] = dateStr.split('/');
-  return new Date(2000+y, m-1, d) < new Date();
+// unchanged
+function isExpired(dateStr, timeStr) {
+  try {
+    const [startTime] = timeStr.split('–');
+    const [hoursMinutes, meridiem] = startTime.match(/(\d{1,2}:\d{0,2})(am|pm)/i).slice(1);
+    let [hours, minutes] = hoursMinutes.split(':').map(Number);
+    if (isNaN(minutes)) minutes = 0;
+    if (meridiem.toLowerCase() === 'pm' && hours !== 12) hours += 12;
+    if (meridiem.toLowerCase() === 'am' && hours === 12) hours = 0;
+
+    const [day, month, year] = dateStr.split('/').map(Number);
+    const eventDate = new Date(2000 + year, month - 1, day, hours, minutes);
+    return eventDate < new Date();
+  } catch {
+    return false;
+  }
 }
 
-// Toggle
-function toggleSection() {
-  const el = document.getElementById('sessionSection');
-  el.style.display = el.style.display === 'none' ? 'block' : 'none';
-}
-
-// Render
+// unchanged
 function renderPage(page) {
   datesRow.innerHTML = '';
   playersRow.innerHTML = '';
   waitlistRow.innerHTML = '';
 
-  const events = eventsData.slice((page-1)*3, page*3);
+  const startIndex = (page - 1) * maxColumnsPerPage;
+  const endIndex = Math.min(startIndex + maxColumnsPerPage, eventsData.length);
+  const pageEvents = eventsData.slice(startIndex, endIndex);
 
-  events.forEach((e, i) => {
-    if (i === 0) {
-      document.getElementById('heroDate').innerText = e.date;
-      document.getElementById('heroTime').innerText = e.time;
-    }
-
-    const expired = isExpired(e.date);
+  pageEvents.forEach(event => {
+    const courtsText = event.courts || '-';
+    const expired = isExpired(event.date, event.time);
 
     const th = document.createElement('th');
-    th.innerHTML = `${e.date}<br>${e.time}`;
+    th.innerHTML = `<strong>${event.date}, ${event.time}</strong><br>Courts: ${courtsText}<br>Cap: ${event.cap || '-'} | Cost: ${event.cost || '-'}`;
     if (expired) th.classList.add('expired');
     datesRow.appendChild(th);
 
-    const td1 = document.createElement('td');
-    td1.innerHTML = `<ol>${e.players.map(p=>`<li>${p.name}</li>`).join('')}</ol>`;
-    if (expired) td1.classList.add('expired');
-    playersRow.appendChild(td1);
+    const tdPlayers = document.createElement('td');
+    tdPlayers.innerHTML = `<strong>Players ${event.players.length >= (event.cap || event.players.length) ? '(FULL)' : ''}</strong>
+      <ol>${event.players.map(p => {
+        if (p.status === 'dropped' && p.replacement) {
+          return `<li>
+                    <span class="player-dropped">${p.name}</span> → 
+                    <span class="player-new" style="text-decoration: none;">${p.replacement}</span>
+                  </li>`;
+        } else {
+          let className = '';
+          if (p.status === 'new') className = 'player-new';
+          if (p.status === 'dropped') className = 'player-dropped';
+          return `<li class="${className}">${p.name}</li>`;
+        }
+      }).join('')}</ol>`;
+    if (expired) tdPlayers.classList.add('expired');
+    playersRow.appendChild(tdPlayers);
 
-    const td2 = document.createElement('td');
-    td2.innerHTML = `<ol>${e.waitlist.map(p=>`<li>${p.name}</li>`).join('')}</ol>`;
-    if (expired) td2.classList.add('expired');
-    waitlistRow.appendChild(td2);
+    const tdWait = document.createElement('td');
+    tdWait.innerHTML = `<strong>Waiting List</strong>
+      <ol>${event.waitlist.map(p => `<li>${p.name}</li>`).join('')}</ol>`;
+    if (expired) tdWait.classList.add('expired');
+    waitlistRow.appendChild(tdWait);
   });
+
+  navLeft.innerHTML = '';
+  navRight.innerHTML = '';
+
+  if (currentPage > 1) {
+    const back = document.createElement('img');
+    back.src = 'arrow_left.png';
+    back.style.height = '30px';
+    back.onclick = () => { currentPage--; renderPage(currentPage); };
+    navLeft.appendChild(back);
+  }
+
+  if (currentPage < totalPages) {
+    const forward = document.createElement('img');
+    forward.src = 'arrow_right.png';
+    forward.style.height = '30px';
+    forward.onclick = () => { currentPage++; renderPage(currentPage); };
+    navRight.appendChild(forward);
+  }
 }
 
-// Load
+// unchanged
 Promise.all([
-  fetch(SESSION_SHEET_URL).then(r=>r.text()),
-  fetch(PLAYER_SHEET_URL).then(r=>r.text())
-]).then(([s,p])=>{
-  const sessions = csvToJson(s);
-  const players = csvToJson(p);
+  fetch(SESSION_SHEET_URL).then(res => res.text()),
+  fetch(PLAYER_SHEET_URL).then(res => res.text())
+]).then(([sessionCsv, playerCsv]) => {
+  const sessions = csvToJson(sessionCsv);
+  const players = csvToJson(playerCsv);
 
-  eventsData = sessions.map(s=>{
-    const sp = players.filter(p=>p.session_id===s.session_id);
+  eventsData = sessions.map(session => {
+    const sessionPlayers = players.filter(p => p.session_id === session.session_id);
+
     return {
-      date: s.date,
-      time: s.time,
-      players: sp.filter(p=>p.list_type==='player'),
-      waitlist: sp.filter(p=>p.list_type==='waitlist')
+      date: session.date,
+      time: session.time,
+      courts: session.courts,
+      cap: Number(session.cap),
+      cost: session.cost,
+
+      players: sessionPlayers
+        .filter(p => p.list_type === 'player')
+        .map(p => ({
+          name: p.name,
+          status: p.status,
+          replacement: p.replacement
+        })),
+
+      waitlist: sessionPlayers
+        .filter(p => p.list_type === 'waitlist')
+        .map(p => ({ name: p.name }))
     };
   });
 
-  renderPage(1);
-});
+  totalPages = Math.ceil(eventsData.length / maxColumnsPerPage);
+  renderPage(currentPage);
+}).catch(err => console.error('Error loading sheets:', err));
 </script>
 
 </body>
