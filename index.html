@@ -249,10 +249,9 @@ fetch(SHEET_URL)
   .then(csv => {
     const rows = csvToJson(csv);
     // Get unique sessions
-    // WAS: const sessionsMap = {};
-    const id = (r.session_id || '').trim();
-
+    const sessionsMap = {};
     rows.forEach(r => {
+      const id = (r.session_id || '').trim();
       if (!sessionsMap[id]) {
         sessionsMap[id] = {
           session_id: r.session_id,
@@ -266,8 +265,8 @@ fetch(SHEET_URL)
         };
       }
       const ev = sessionsMap[id];
-      if ((r.list_type || '').toLowerCase() === 'player')
-      //WAS: if (r.list_type === 'player') {
+      const type = (r.list_type || '').toLowerCase();
+      if (type === 'player') {
         ev.players.push(
           { 
             name: (r.name || '').trim(),
@@ -278,8 +277,9 @@ fetch(SHEET_URL)
       else if (type === 'waitlist') {
         ev.waitlist.push({name: (r.name || '').trim()});
       }
+    });
 
-eventsData = Object.values(sessionsMap);
+    eventsData = Object.values(sessionsMap);
     totalPages = Math.ceil(eventsData.length / maxColumnsPerPage);
     renderPage(currentPage);
     loadingMsg.style.display = 'none';
@@ -287,9 +287,9 @@ eventsData = Object.values(sessionsMap);
   .catch(err => { console.error('Error loading sheet:', err); loadingMsg.innerText = 'Failed to load data'; });
 
 // Open form page
-openFormBtn.addEventListener('click', () => {
-  window.open('event_invitation.html', '_blank');
-});
+// openFormBtn.addEventListener('click', () => {
+//   window.open('event_invitation.html', '_blank');
+// });
 </script>
 
 </body>
