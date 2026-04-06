@@ -4,67 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pickleball @ CP1</title>
-<style>
-  body { font-family: Arial, sans-serif; margin: 0; background-color: #FFC0CB; }
-  header { background-color: #FFC0CB; color: white; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; }
-  header img { height: 40px; margin-right: 10px; }
-  header h1 { 
-    margin: 0; 
-    font-size: 1.70em;
-    font-weight: 700; 
-    font-family: 'Impact', 'Arial Black', sans-serif;
-    color: #fff;
-    text-shadow: 2px 2px #c94f7c; 
-    letter-spacing: 1px;
-  }
-  .container { padding: 20px; }
-
-  .player-new { color: green; font-weight: bold; }
-  .player-dropped { text-decoration: line-through; color: grey; opacity: 0.7; }
-  table { 
-    width: 100%; 
-    border-collapse: collapse; 
-    margin-top: 10px; 
-    background-color: white; 
-    border-radius: 8px;
-    overflow: hidden;
-    font-size: 0.96em;
-  }
-  th, td { border: 1px solid #e0e0e0; padding: 10px; vertical-align: top; }
-  th { background-color: #c94f7c; color: white; } 
-  td { background-color: #fff7f9; }
-  .expired { background-color: #d3d3d3 !important; color: #888 !important; }
-  ol { padding-left: 20px; margin: 5px 0; min-height: 220px; }
-  p { margin: 5px 0; }
-  .nav-left, .nav-right { position: fixed; top: 50%; transform: translateY(-50%); cursor: pointer; }
-  .nav-left { left: 10px; }
-  .nav-right { right: 10px; }
-  
-  .info-bar {
-    display: flex;
-    flex-wrap: wrap;       /* Allows it to wrap on smaller screens */
-    gap: 20px;             /* Space between items */
-    margin-bottom: 15px;   
-    font-family: 'Arial', sans-serif;
-    font-weight: 600;
-    color: #c94f7c;
-  }
-
-  .info-item {
-    background-color: #fff7f9;
-    padding: 5px 10px;
-    border-radius: 6px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  }
-  
-  #loadingMsg { font-weight: bold; color: #c94f7c; margin-bottom: 10px; }
-
-  <div style="font-size:12px; color:#555; margin-top:10px;">
-  Version 1.0
-</div>
-
-
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 
 </head>
 <body>
@@ -77,33 +18,48 @@
 </header>
 
  <!-- Info bar -->
-  <div class="info-bar">
-    <div class="info-item"><strong>Organiser:</strong> Maggie</div>
-    <div class="info-item"><strong>Pay ID:</strong> 1234</div>
-    <div class="info-item"><strong>Extras:</strong> Drinks included</div>
-  </div>
+  <div class="container">
+    <div class="info-bar">
+      <div class="info-item"><strong>Organiser:</strong> Maggie</div>
+      <div class="info-item"><strong>Pay ID:</strong> 1234</div>
+      <div class="info-item"><strong>Extras:</strong> Drinks included</div>
+    </div>
 
-  <table id="eventsTable">
+    <button onclick="goToForm()" class="btn-ios">
+      Join / RSVP
+    </button>
+
+    <div id="loadingMsg">Loading data...</div>
+    <div id="debugStatus" style="font-size:0.95em; color:#333; margin-bottom:10px;"></div>
+    <table id="eventsTable">
     <tr id="datesRow"></tr>
     <tr id="playersRow"></tr>
     <tr id="waitlistRow"></tr>
   </table>
 
-  <div style="margin-bottom:10px;">
-    <button onclick="goToForm()" style="
-      background:#c94f7c;
-      color:white;
-      border:none;
-      padding:10px 16px;
-      border-radius:8px;
-      cursor:pointer;
-      font-weight:bold;
-    ">
-      Join / RSVP
-    </button>
+    <table class="legend-table">
+      <tr>
+        <th>Status Legend</th>
+        <th>Meaning</th>
+      </tr>
+      <tr>
+        <td><span class="new">New player</span></td>
+        <td>First-time player for this event</td>
+      </tr>
+      <tr>
+        <td><span style="background: rgba(90, 200, 250, 0.15); color: #5ac8fa; padding: 6px 14px; border-radius: 20px; font-weight: 600;">Returning</span></td>
+        <td>Returning or regular player</td>
+      </tr>
+      <tr>
+        <td><span class="dropped">Dropped player</span></td>
+        <td>Player has been removed</td>
+      </tr>
+      <tr>
+        <td><span class="replacement">Replacement</span></td>
+        <td>Replacement for a dropped player</td>
+      </tr>
+    </table>
   </div>
-
-</div>
 
 <div id="navLeft" class="nav-left"></div>
 <div id="navRight" class="nav-right"></div>
@@ -122,8 +78,17 @@ const waitlistRow = document.getElementById('waitlistRow');
 const navLeft = document.getElementById('navLeft');
 const navRight = document.getElementById('navRight');
 const loadingMsg = document.getElementById('loadingMsg');
+const debugStatus = false; // disable debug status display
 const openFormBtn = document.getElementById('openFormBtn');
 
+window.onerror = function(message, source, lineno, colno, error) {
+  console.error('Global error:', message, 'at', source + ':' + lineno + ':' + colno, error);
+  if (debugStatus) debugStatus.innerText = 'Error: ' + message;
+};
+
+if (debugStatus) {
+  debugStatus.innerText = 'Script loaded, waiting for fetch...';
+}
 
 function goToForm() {
   window.location.href = "form.html";
@@ -204,7 +169,7 @@ function renderPage(page) {
         if (p.status === 'dropped' && p.replacement) {
           return `<li>
                     <span class="player-dropped">${p.name}</span> → 
-                    <span class="player-new" style="text-decoration: none;">${p.replacement}</span>
+                    <span class="player-replacement">${p.replacement}</span>
                   </li>`;
         } else {
           let className = '';
@@ -244,10 +209,18 @@ function renderPage(page) {
 }
 
 // Load data
+console.log('Fetch started:', SHEET_URL);
+if (debugStatus) debugStatus.innerText = 'Fetching CSV...';
 fetch(SHEET_URL)
-  .then(res => res.text())
+  .then(res => {
+    console.log('Fetch response:', res.status, res.ok);
+    if (!res.ok) throw new Error('Network response was not ok: ' + res.status);
+    return res.text();
+  })
   .then(csv => {
+    console.log('CSV length:', csv.length);
     const rows = csvToJson(csv);
+    console.log('Parsed rows count:', rows.length);
     // Get unique sessions
     const sessionsMap = {};
     rows.forEach(r => {
@@ -266,31 +239,47 @@ fetch(SHEET_URL)
       }
       const ev = sessionsMap[id];
       const type = (r.list_type || '').toLowerCase();
+      const personName = [
+        (r.firstname || '').trim(),
+        (r.lastname || '').trim()
+      ].filter(Boolean).join(' ');
+
       if (type === 'player') {
         ev.players.push(
           { 
-            name: (r.name || '').trim(),
+            name: personName,
             status: (r.status || '').trim(),
             replacement: (r.replacement || '').trim()
+          }
         );
       } 
       else if (type === 'waitlist') {
-        ev.waitlist.push({name: (r.name || '').trim()});
+        ev.waitlist.push({name: personName});
       }
     });
 
     eventsData = Object.values(sessionsMap);
+    console.log('Events data:', eventsData);
     totalPages = Math.ceil(eventsData.length / maxColumnsPerPage);
     renderPage(currentPage);
     loadingMsg.style.display = 'none';
+    if (debugStatus) debugStatus.innerText = 'Data loaded successfully.';
   })
-  .catch(err => { console.error('Error loading sheet:', err); loadingMsg.innerText = 'Failed to load data'; });
+  .catch(err => {
+    console.error('Error loading sheet:', err);
+    loadingMsg.innerText = 'Failed to load data';
+    if (debugStatus) debugStatus.innerText = 'Error loading data: ' + err.message;
+  });
 
 // Open form page
 // openFormBtn.addEventListener('click', () => {
 //   window.open('event_invitation.html', '_blank');
 // });
 </script>
+
+<div style="font-size:12px; color:#555; margin-top:10px;">
+  Version 1.1
+</div>
 
 </body>
 </html>
