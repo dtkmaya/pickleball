@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pickleball RSVP</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tooplate-event-invitation.css">
+
+<style>
+body { font-family: 'Outfit', sans-serif; }
+
+/* Simple back button */
+.back-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background: #c94f7c;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="back-btn" onclick="goBack()">← Back</div>
+
+<div class="container">
+
+<!-- HERO -->
+<section class="hero-section">
+  <div class="hero-content">
+    <div class="hero-badge">Pickleball Session</div>
+    <h1 class="hero-title">Join the Game 🎾</h1>
+    <p class="hero-description">
+      Register for the next pickleball session. Spots are limited — secure yours early.
+    </p>
+  </div>
+</section>
+
+<!-- RSVP -->
+<section class="rsvp-section">
+  <div class="rsvp-inner">
+
+    <div class="success-message" id="successMessage" style="display:none;">
+      <div class="success-icon">✓</div>
+      <div class="success-text">You're in! See you on court.</div>
+    </div>
+
+    <div class="form-header">
+      <h2 class="form-title">Enter Your Details</h2>
+    </div>
+
+    <form id="rsvpForm">
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name *</label>
+          <input type="text" name="firstName" required>
+        </div>
+
+        <div class="form-group">
+          <label>Last Name *</label>
+          <input type="text" name="lastName" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Phone *</label>
+        <input type="tel" name="phone" required>
+      </div>
+
+      <div class="form-group">
+        <label>Session ID (optional)</label>
+        <input type="text" name="session">
+      </div>
+
+      <div class="form-group">
+        <label>Joining As</label>
+        <div class="rsvp-options">
+          <div class="rsvp-option">
+            <input type="radio" name="type" value="player" checked>
+            <label>Player</label>
+          </div>
+          <div class="rsvp-option">
+            <input type="radio" name="type" value="waitlist">
+            <label>Waitlist</label>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn">Join Session</button>
+
+    </form>
+
+  </div>
+</section>
+
+</div>
+
+<script>
+
+// Back
+function goBack() {
+  window.location.href = "index.html";
+}
+
+// Fake submit (for now)
+document.getElementById('rsvpForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  document.getElementById('successMessage').style.display = 'block';
+  this.style.display = 'none';
+
+  // Later: send to Google Sheets
+});
+
+</script>
+
+</body>
+</html>
