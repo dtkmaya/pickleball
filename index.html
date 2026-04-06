@@ -122,17 +122,39 @@ const openFormBtn = document.getElementById('openFormBtn');
 function goToForm() {
   window.location.href = "form.html";
 }
+
+
 // CSV to JSON
 function csvToJson(csv) {
   const lines = csv.split('\n').filter(l => l.trim() !== '');
   const headers = lines[0].split(',').map(h => h.trim());
+
   return lines.slice(1).map(line => {
-    const data = line.split(',');
+    const data = [];
+    let current = '';
+    let inQuotes = false;
+
+    for (let i = 0; i < line.length; i++) {
+      const char = line[i];
+
+      if (char === '"') {
+        inQuotes = !inQuotes;
+      } else if (char === ',' && !inQuotes) {
+        data.push(current.trim());
+        current = '';
+      } else {
+        current += char;
+      }
+    }
+    data.push(current.trim());
+
     let obj = {};
-    headers.forEach((h, i) => obj[h] = data[i]?.trim());
+    headers.forEach((h, i) => obj[h] = data[i] || '');
     return obj;
   });
 }
+
+
 
 // Check if event expired
 function isExpired(dateStr, timeStr) {
@@ -221,10 +243,12 @@ fetch(SHEET_URL)
   .then(csv => {
     const rows = csvToJson(csv);
     // Get unique sessions
-    const sessionsMap = {};
+    // WAS: const sessionsMap = {};
+    const id = (r.session_id || '').trim();
+
     rows.forEach(r => {
-      if (!sessionsMap[r.session_id]) {
-        sessionsMap[r.session_id] = {
+      if (!sessionsMap[id]) {
+        sessionsMap[id] = {
           session_id: r.session_id,
           date: r.date,
           time: r.time,
@@ -235,14 +259,21 @@ fetch(SHEET_URL)
           waitlist: []
         };
       }
-      const ev = sessionsMap[r.session_id];
-      if (r.list_type === 'player') {
-        ev.players.push({ name: r.name, status: r.status, replacement: r.replacement });
-      } else if (r.list_type === 'waitlist') {
-        ev.waitlist.push({ name: r.name });
+      const ev = sessionsMap[id];
+      if ((r.list_type || '').toLowerCase() === 'player')
+      //WAS: if (r.list_type === 'player') {
+        ev.players.push(
+          { 
+            name: (r.name || '').trim(),
+            status: (r.status || '').trim(),
+            replacement: (r.replacement || '').trim()
+        );
+      } 
+      else if (type === 'waitlist') {
+        ev.waitlist.push({name: (r.name || '').trim()});
       }
-    });
-    eventsData = Object.values(sessionsMap);
+
+eventsData = Object.values(sessionsMap);
     totalPages = Math.ceil(eventsData.length / maxColumnsPerPage);
     renderPage(currentPage);
     loadingMsg.style.display = 'none';
