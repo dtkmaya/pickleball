@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -8,7 +8,6 @@
   body { font-family: Arial, sans-serif; margin: 0; background-color: #FFC0CB; }
   header { background-color: #FFC0CB; color: white; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; }
   header img { height: 40px; margin-right: 10px; }
-
   header h1 { 
     margin: 0; 
     font-size: 1.70em;
@@ -18,12 +17,9 @@
     text-shadow: 2px 2px #c94f7c; 
     letter-spacing: 1px;
   }
-
   .container { padding: 20px; }
-
   .player-new { color: green; font-weight: bold; }
   .player-dropped { text-decoration: line-through; color: grey; opacity: 0.7; }
-
   table { 
     width: 100%; 
     border-collapse: collapse; 
@@ -33,55 +29,34 @@
     overflow: hidden;
     font-size: 0.96em;
   }
-
   th, td { border: 1px solid #e0e0e0; padding: 10px; vertical-align: top; }
-
   th { background-color: #c94f7c; color: white; } 
   td { background-color: #fff7f9; }
-
-  .expired { 
-    background-color: #d3d3d3 !important; 
-    color: #888 !important; 
-  }
-
-  ol { 
-    padding-left: 20px; 
-    margin: 5px 0; 
-    min-height: 220px;
-  }
-
+  .expired { background-color: #d3d3d3 !important; color: #888 !important; }
+  ol { padding-left: 20px; margin: 5px 0; min-height: 220px; }
   p { margin: 5px 0; }
-
-  /* Navigation arrows */
-  .nav-left, .nav-right { 
-    position: fixed;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-  }
+  .nav-left, .nav-right { position: fixed; top: 50%; transform: translateY(-50%); cursor: pointer; }
   .nav-left { left: 10px; }
   .nav-right { right: 10px; }
-
-  /* Drinks included text */
-  .drinks-info {
-    font-family: 'Impact', 'Arial Black', sans-serif;
-    font-size: 1.2em;
+  
+  .info-bar {
+    display: flex;
+    flex-wrap: wrap;       /* Allows it to wrap on smaller screens */
+    gap: 20px;             /* Space between items */
+    margin-bottom: 15px;   
+    font-family: 'Arial', sans-serif;
+    font-weight: 600;
     color: #c94f7c;
-    text-shadow: 1px 1px #fff;
-    margin-bottom: 10px;
   }
 
-  /* NEW: button styling (minimal) */
-  .join-btn {
-    background:#c94f7c;
-    color:white;
-    border:none;
-    padding:10px 16px;
-    border-radius:8px;
-    cursor:pointer;
-    font-weight:bold;
-    margin-bottom:10px;
+  .info-item {
+    background-color: #fff7f9;
+    padding: 5px 10px;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   }
+  
+  #loadingMsg { font-weight: bold; color: #c94f7c; margin-bottom: 10px; }
 </style>
 </head>
 <body>
@@ -93,21 +68,22 @@
   </div>
 </header>
 
-<div class="container">
-
-  <!-- NEW BUTTON -->
-  <button class="join-btn" onclick="goToForm()">Join / RSVP</button>
-
-  <div class="drinks-info">Drinks included</div>
+ <!-- Info bar -->
+  <div class="info-bar">
+    <div class="info-item"><strong>Organiser:</strong> Maggie</div>
+    <div class="info-item"><strong>Pay ID:</strong> 1234</div>
+    <div class="info-item"><strong>Extras:</strong> Drinks included</div>
+  </div>
 
   <table id="eventsTable">
     <tr id="datesRow"></tr>
     <tr id="playersRow"></tr>
     <tr id="waitlistRow"></tr>
   </table>
+
+  <button id="openFormBtn" style="margin-top:20px;padding:10px 20px;font-weight:bold;">Create Invitation Page</button>
 </div>
 
-<!-- Navigation arrows -->
 <div id="navLeft" class="nav-left"></div>
 <div id="navRight" class="nav-right"></div>
 
@@ -117,21 +93,17 @@ const maxColumnsPerPage = 3;
 let totalPages = 1;
 let eventsData = [];
 
-const SESSION_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRu60f6E2q_EbTv3QGvhHImUnpZbJj6106zEb1eN9uGJx_mOsOQRq27DA8V1AxXL5ld9yOVJ-RU3e3-/pub?output=csv';
-const PLAYER_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ6LUO1jogAVhhEdNY0QiwMgkyVNoR7QFCmxWcUFsQ063ohf3wcJS_QMOdx1iHmjxjazMwWe_cIaQ-K/pub?output=csv';
+const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSPHBv4ZNccoG7YUoYMNYBCI-QRJfTE9ARrXY_sHtEIuSIcBxY1BC0zJM9dbUfYdjF6OfFOzbnrTQl4/pub?gid=0&single=true&output=csv';
 
 const datesRow = document.getElementById('datesRow');
 const playersRow = document.getElementById('playersRow');
 const waitlistRow = document.getElementById('waitlistRow');
 const navLeft = document.getElementById('navLeft');
 const navRight = document.getElementById('navRight');
+const loadingMsg = document.getElementById('loadingMsg');
+const openFormBtn = document.getElementById('openFormBtn');
 
-// NEW: navigate to form page
-function goToForm() {
-  window.location.href = "form.html";
-}
-
-// Convert CSV to JSON
+// CSV to JSON
 function csvToJson(csv) {
   const lines = csv.split('\n').filter(l => l.trim() !== '');
   const headers = lines[0].split(',').map(h => h.trim());
@@ -143,7 +115,7 @@ function csvToJson(csv) {
   });
 }
 
-// Helper: check if event date/time has passed
+// Check if event expired
 function isExpired(dateStr, timeStr) {
   try {
     const [startTime] = timeStr.split('–');
@@ -152,7 +124,6 @@ function isExpired(dateStr, timeStr) {
     if (isNaN(minutes)) minutes = 0;
     if (meridiem.toLowerCase() === 'pm' && hours !== 12) hours += 12;
     if (meridiem.toLowerCase() === 'am' && hours === 12) hours = 0;
-
     const [day, month, year] = dateStr.split('/').map(Number);
     const eventDate = new Date(2000 + year, month - 1, day, hours, minutes);
     return eventDate < new Date();
@@ -225,42 +196,44 @@ function renderPage(page) {
   }
 }
 
-// Fetch Sheets
-Promise.all([
-  fetch(SESSION_SHEET_URL).then(res => res.text()),
-  fetch(PLAYER_SHEET_URL).then(res => res.text())
-]).then(([sessionCsv, playerCsv]) => {
-  const sessions = csvToJson(sessionCsv);
-  const players = csvToJson(playerCsv);
+// Load data
+fetch(SHEET_URL)
+  .then(res => res.text())
+  .then(csv => {
+    const rows = csvToJson(csv);
+    // Get unique sessions
+    const sessionsMap = {};
+    rows.forEach(r => {
+      if (!sessionsMap[r.session_id]) {
+        sessionsMap[r.session_id] = {
+          session_id: r.session_id,
+          date: r.date,
+          time: r.time,
+          courts: r.courts,
+          cap: Number(r.cap),
+          cost: r.cost,
+          players: [],
+          waitlist: []
+        };
+      }
+      const ev = sessionsMap[r.session_id];
+      if (r.list_type === 'player') {
+        ev.players.push({ name: r.name, status: r.status, replacement: r.replacement });
+      } else if (r.list_type === 'waitlist') {
+        ev.waitlist.push({ name: r.name });
+      }
+    });
+    eventsData = Object.values(sessionsMap);
+    totalPages = Math.ceil(eventsData.length / maxColumnsPerPage);
+    renderPage(currentPage);
+    loadingMsg.style.display = 'none';
+  })
+  .catch(err => { console.error('Error loading sheet:', err); loadingMsg.innerText = 'Failed to load data'; });
 
-  eventsData = sessions.map(session => {
-    const sessionPlayers = players.filter(p => p.session_id === session.session_id);
-
-    return {
-      date: session.date,
-      time: session.time,
-      courts: session.courts,
-      cap: Number(session.cap),
-      cost: session.cost,
-
-      players: sessionPlayers
-        .filter(p => p.list_type === 'player')
-        .map(p => ({
-          name: p.name,
-          status: p.status,
-          replacement: p.replacement
-        })),
-
-      waitlist: sessionPlayers
-        .filter(p => p.list_type === 'waitlist')
-        .map(p => ({ name: p.name }))
-    };
-  });
-
-  totalPages = Math.ceil(eventsData.length / maxColumnsPerPage);
-  renderPage(currentPage);
-
-}).catch(err => console.error('Error loading sheets:', err));
+// Open form page
+openFormBtn.addEventListener('click', () => {
+  window.open('event_invitation.html', '_blank');
+});
 </script>
 
 </body>
