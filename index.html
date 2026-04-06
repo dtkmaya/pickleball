@@ -18,6 +18,7 @@
     letter-spacing: 1px;
   }
   .container { padding: 20px; }
+
   .player-new { color: green; font-weight: bold; }
   .player-dropped { text-decoration: line-through; color: grey; opacity: 0.7; }
   table { 
@@ -58,6 +59,7 @@
   
   #loadingMsg { font-weight: bold; color: #c94f7c; margin-bottom: 10px; }
 </style>
+
 </head>
 <body>
 
@@ -81,7 +83,20 @@
     <tr id="waitlistRow"></tr>
   </table>
 
-  <button id="openFormBtn" style="margin-top:20px;padding:10px 20px;font-weight:bold;">Create Invitation Page</button>
+  <div style="margin-bottom:10px;">
+    <button onclick="goToForm()" style="
+      background:#c94f7c;
+      color:white;
+      border:none;
+      padding:10px 16px;
+      border-radius:8px;
+      cursor:pointer;
+      font-weight:bold;
+    ">
+      Join / RSVP
+    </button>
+  </div>
+
 </div>
 
 <div id="navLeft" class="nav-left"></div>
@@ -103,6 +118,10 @@ const navRight = document.getElementById('navRight');
 const loadingMsg = document.getElementById('loadingMsg');
 const openFormBtn = document.getElementById('openFormBtn');
 
+
+function goToForm() {
+  window.location.href = "form.html";
+}
 // CSV to JSON
 function csvToJson(csv) {
   const lines = csv.split('\n').filter(l => l.trim() !== '');
