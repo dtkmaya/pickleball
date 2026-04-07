@@ -21,7 +21,7 @@
   <div class="container">
     <div class="info-bar">
       <div class="info-item"><strong>Organiser:</strong> Maggie</div>
-      <div class="info-item"><strong>Pay ID:</strong> 1234</div>
+      <div class="info-item"><strong>Pay ID:</strong> Thi L 0421829872</div>
       <div class="info-item"><strong>Extras:</strong> Drinks included</div>
     </div>
 
@@ -37,34 +37,48 @@
     <tr id="waitlistRow"></tr>
   </table>
 
-    <table class="legend-table">
-      <tr>
-        <th>Status Legend</th>
-        <th>Meaning</th>
-      </tr>
-      <tr>
-        <td><span class="new">New player</span></td>
-        <td>First-time player for this event</td>
-      </tr>
-      <tr>
-        <td><span style="background: rgba(90, 200, 250, 0.15); color: #5ac8fa; padding: 6px 14px; border-radius: 20px; font-weight: 600;">Returning</span></td>
-        <td>Returning or regular player</td>
-      </tr>
-      <tr>
-        <td><span class="dropped">Dropped player</span></td>
-        <td>Player has been removed</td>
-      </tr>
-      <tr>
-        <td><span class="replacement">Replacement</span></td>
-        <td>Replacement for a dropped player</td>
-      </tr>
-    </table>
+    <button id="toggleLegendBtn" class="btn-secondary" style="margin: 20px 0;">Show Legend</button>
+    <div id="legendTableContainer" style="display: none; margin-bottom: 30px;">
+      <table class="legend-table">
+        <tr>
+          <th>Status Legend</th>
+          <th>Meaning</th>
+        </tr>
+        <tr>
+          <td><span class="new">New player</span></td>
+          <td>First-time player for this event</td>
+        </tr>
+        <tr>
+          <td><span style="background: rgba(90, 200, 250, 0.15); color: #5ac8fa; padding: 6px 14px; border-radius: 20px; font-weight: 600;">Returning</span></td>
+          <td>Returning or regular player</td>
+        </tr>
+        <tr>
+          <td><span class="dropped">Dropped player</span></td>
+          <td>Player has been removed</td>
+        </tr>
+        <tr>
+          <td><span class="replacement">Replacement</span></td>
+          <td>Replacement for a dropped player</td>
+        </tr>
+      </table>
+    </div>
   </div>
 
 <div id="navLeft" class="nav-left"></div>
 <div id="navRight" class="nav-right"></div>
 
 <script>
+const btn = document.getElementById('toggleLegendBtn');
+const legend = document.getElementById('legendTableContainer');
+btn.addEventListener('click', function() {
+  if (legend.style.display === 'none') {
+    legend.style.display = 'block';
+    btn.textContent = 'Hide Legend';
+  } else {
+    legend.style.display = 'none';
+    btn.textContent = 'Show Legend';
+  }
+});
 let currentPage = 1;
 const maxColumnsPerPage = 3;
 let totalPages = 1;
@@ -159,7 +173,11 @@ function renderPage(page) {
     const expired = isExpired(event.date, event.time);
 
     const th = document.createElement('th');
-    th.innerHTML = `<strong>${event.date}, ${event.time}</strong><br>Courts: ${courtsText}<br>Cap: ${event.cap || '-'} | Cost: ${event.cost || '-'}`;
+    let costDisplay = '';
+    if (typeof event.cost === 'string' && event.cost.trim() !== '') {
+      costDisplay = event.cost.trim().startsWith('$') ? event.cost.trim() : ('$' + event.cost.trim());
+    }
+    th.innerHTML = `<strong>${event.date}, ${event.time}</strong><br>Courts: ${courtsText}<br>Cap: ${event.cap || '-'}` + (costDisplay ? ` | Cost: ${costDisplay}` : '');
     if (expired) th.classList.add('expired');
     datesRow.appendChild(th);
 
@@ -282,4 +300,14 @@ fetch(SHEET_URL)
 </div>
 
 </body>
+<footer style="margin-top: 40px; padding: 20px 0; background: #f5f5f5; text-align: center; font-size: 1em;">
+  <div>
+    <a href="guidelines.html" target="_blank" rel="noopener" class="btn-secondary" style="margin-bottom: 8px;">Community Guidelines</a>
+  </div>
+  <div style="margin-top: 8px;">
+    <a href="https://www.google.com/maps/search/?api=1&query=Central+Pick+Bankstown" target="_blank" rel="noopener" class="btn-secondary" style="margin-bottom: 8px;">
+      Where: Central Pick, Bankstown
+    </a>
+  </div>
+</footer>
 </html>
