@@ -1,3 +1,15 @@
+/* Footer color enforcement */
+.footer, .footer * {
+  color: #111 !important;
+}
+.footer a,
+.footer a:visited,
+.footer a:active,
+.footer a:hover,
+.footer a:focus {
+  color: #111 !important;
+  text-decoration: underline;
+}
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 body{
   line-height: 1.5;
@@ -33,8 +45,8 @@ ul{
 /* Divider above footer */
 .fade-divider {
   width: 100%;
-  height: 18px;
-  background: linear-gradient(180deg, #FFC0CB 0%, #fff 100%);
+  height: 6px;
+  background: linear-gradient(90deg, #FFC0CB 0%, #FFB6D9 100%);
   margin: 0;
   border: none;
 }
@@ -272,7 +284,7 @@ header h1 {
 }
 .legend-table td span.replacement { 
   background: rgba(90, 200, 250, 0.15); 
-  color: #5ac8fa; 
+  color: #111; 
 }
 .legend-table td span.dropped { 
   background: rgba(211, 211, 211, 0.3); 
