@@ -1,3 +1,22 @@
+/* Navigation link hover effect */
+.footer a,
+.footer a:visited,
+.footer a:active {
+  color: #111 !important;
+  text-decoration: none;
+  transition: color 0.18s, background 0.18s, box-shadow 0.18s;
+  border-radius: 7px;
+  padding: 2px 10px;
+}
+.footer a:hover,
+.footer a:focus {
+  color: #fff !important;
+  background: linear-gradient(90deg, #c94f7c 0%, #b5356a 100%);
+  box-shadow: 0 2px 8px rgba(201,79,124,0.10);
+  text-decoration: underline;
+  font-weight: bold;
+  transform: scale(1.07);
+}
 .footer a:hover, .footer a:focus {
   color: #c94f7c !important;
   text-decoration: underline;
@@ -15,10 +34,9 @@
   color: #111 !important;
   text-decoration: underline;
 }
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 body{
   line-height: 1.5;
-  font-family: 'Poppins', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Lato', Arial, sans-serif;
 }
   color: #111;
 {
@@ -57,7 +75,7 @@ ul{
 }
   background-color: #f8f9fb;
   padding: 48px 0 32px 0;
-  font-family: 'Poppins', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Lato', Arial, sans-serif;
   color: #222;
   margin: 0 auto;
   max-width: 700px;
@@ -190,12 +208,12 @@ header h1 {
   background: linear-gradient(135deg, #c94f7c 0%, #b5356a 100%);
   color: white;
   border: none;
-  padding: 14px 28px;
-  border-radius: 16px;
+  padding: 8px 15px;
+  border-radius: 10px;
   cursor: pointer;
   font-weight: 600;
-  font-size: 1rem;
-  box-shadow: 0 8px 20px rgba(201, 79, 124, 0.3);
+  font-size: 0.85rem;
+  box-shadow: 0 4px 10px rgba(201, 79, 124, 0.18);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   letter-spacing: 0.3px;
 }
@@ -252,7 +270,7 @@ header h1 {
   border: none;
   border-radius: 16px;
   overflow: hidden;
-  font-size: 0.85em;
+  font-size: 0.96em;
   box-shadow: 0 8px 20px rgba(201, 79, 124, 0.1);
 }
 .legend-table th,
