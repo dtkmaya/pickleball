@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pickleball RSVP</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+
+<style>
+.back-btn {
+  position: fixed;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  color: transparent;
+  padding: 0;
+  border-radius: 0;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95em;
+  border: none;
+  box-shadow: none;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  margin: 0;
+}
+
+.form-group select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  font-size: 1em;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  background: white;
+  cursor: pointer;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.rsvp-options {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.rsvp-option {
+  flex: 1;
+  min-width: 140px;
+}
+
+.rsvp-option input[type="radio"] {
+  display: none;
+}
+
+.rsvp-option label {
+  display: block;
+  padding: 12px 16px;
+  background: #f5f5f5;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: center;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  color: #666;
+  margin-bottom: 0;
+}
+
+  background: linear-gradient(135deg, #c94f7c 0%, #b5356a 100%);
+  color: #b0bec5;
+  border-color: #c94f7c;
+}
+
+  width: 100%;
+  padding: 14px 28px;
+  background: linear-gradient(135deg, #c94f7c 0%, #b5356a 100%);
+  color: #b0bec5;
+  border: none;
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 1em;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(201, 79, 124, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  letter-spacing: 0.3px;
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(201, 79, 124, 0.4);
+}
+
+.submit-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(201, 79, 124, 0.25);
+}
+
+  background: linear-gradient(135deg, #34c759 0%, #30b050 100%);
+  color: #b0bec5;
+  padding: 30px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(52, 199, 89, 0.2);
+}
+
+.success-message.waitlist {
+  background: linear-gradient(135deg, #5ac8fa 0%, #3394ff 100%);
+  box-shadow: 0 8px 20px rgba(90, 200, 250, 0.2);
+}
+
+.success-icon {
+  font-size: 3em;
+  margin-bottom: 15px;
+}
+
+.success-text {
+  font-size: 1.2em;
+  font-weight: 700;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.success-subtext {
+  font-size: 0.95em;
+  margin-top: 10px;
+  opacity: 0.95;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div style="display: flex; align-items: center;">
+    <img src="images/LogoWeb-Kangaroo.png" alt="Pickleball Logo">
+    <h1>Pickleball RSVP</h1>
+  </div>
+</header>
+
+<button class="back-btn" onclick="goBack()">
+  <img src="images/arrow_left.png" alt="Back" style="background: transparent; box-shadow: none; border-radius: 0;">
+</button>
+
+<div class="form-container">
+  <div class="form-section">
+    <h2 class="form-title">Join a Game Session</h2>
+
+    <div class="success-message" id="successMessage" style="display:none;">
+      <div class="success-icon" id="successIcon">✓</div>
+      <div class="success-text" id="successText">Joined as player!</div>
+      <div class="success-subtext" id="successSubtext">See you on court</div>
+    </div>
+
+    <form id="rsvpForm">
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name *</label>
+          <input type="text" name="firstName" required>
+        </div>
+
+        <div class="form-group">
+          <label>Last Name *</label>
+          <input type="text" name="lastName" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Phone (Last 4 digits only) *</label>
+        <input type="text" name="phone" pattern="[0-9]{4}" maxlength="4" placeholder="1234" required>
+        <small style="color: #666; font-size: 0.85em;">Enter exactly 4 digits (e.g., 1234)</small>
+      </div>
+
+      <div class="form-group">
+        <label>Select Session *</label>
+        <select name="session" id="sessionSelect" required disabled>
+          <option value="">Loading available sessions...</option>
+        </select>
+      </div>
+
+      <button type="submit" class="submit-btn">Join</button>
+
+    </form>
+
+  </div>
+</div>
+
+<script>
+// const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSPHBv4ZNccoG7YUoYMNYBCI-QRJfTE9ARrXY_sHtEIuSIcBxY1BC0zJM9dbUfYdjF6OfFOzbnrTQl4/pub?gid=0&single=true&output=csv';
+const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSPHBv4ZNccoG7YUoYMNYBCI-QRJfTE9ARrXY_sHtEIuSIcBxY1BC0zJM9dbUfYdjF6OfFOzbnrTQl4/pub?gid=0&single=true&output=csv';
+
+// Replace this with your deployed Google Apps Script web app URL
+//WAS: const SUBMIT_URL = 'https://script.google.com/macros/s/AKfycbxVZTbqJQDKuce0yARPNKAZr-PF_UQrgJ6gj3RWYUKDuh9I8FS6sqDFFo7irRcsY0iM/exec';
+// const SUBMIT_URL = 'https://script.google.com/macros/s/AKfycbzu6acCasdj-omxqRZpXSVwaCN00fBaVEWY838B2_UU39t5BTkqMPG3nC6eKHm1f4lW/exec'
+const SUBMIT_URL = 'https://script.google.com/macros/s/AKfycbzneRlb6RHK6IUOJ2OsHpZvguA1k_xvTEypr-ENsLL4QvDfXSxI3Y3ENjHKjDxiaa37/exec';
+
+let sessionsData = [];
+
+function goBack() {
+  window.location.href = "index.html";
+}
+
+// CSV to JSON (same as index.html)
+function csvToJson(csv) {
+  const lines = csv.split('\n').filter(l => l.trim() !== '');
+  const headers = lines[0].split(',').map(h => h.trim());
+  return lines.slice(1).map(line => {
+    const data = [];
+    let current = '';
+    let inQuotes = false;
+    for (let i = 0; i < line.length; i++) {
+      const char = line[i];
+      if (char === '"') {
+        inQuotes = !inQuotes;
+      } else if (char === ',' && !inQuotes) {
+        data.push(current.trim());
+        current = '';
+      } else {
+        current += char;
+      }
+    }
+    data.push(current.trim());
+    let obj = {};
+    headers.forEach((h, i) => obj[h] = data[i] || '');
+    return obj;
+  });
+}
+
+// Load sessions for dropdown
+function loadSessions() {
+  fetch(SHEET_URL)
+    .then(res => res.text())
+    .then(csv => {
+      const rows = csvToJson(csv);
+      const sessionsMap = {};
+      
+      rows.forEach(r => {
+        const id = (r.session_id || '').trim();
+        if (!sessionsMap[id]) {
+          sessionsMap[id] = {
+            session_id: r.session_id,
+            date: r.date,
+            time: r.time,
+            courts: r.courts,
+            cap: Number(r.cap),
+            cost: r.cost
+          };
+        }
+      });
+      
+      sessionsData = Object.values(sessionsMap);
+      populateSessionDropdown();
+    })
+    .catch(err => {
+      console.error('Error loading sessions:', err);
+      document.getElementById('sessionSelect').innerHTML = '<option value="">Error loading sessions</option>';
+    });
+}
+
+// Populate dropdown with available sessions
+function populateSessionDropdown() {
+  const select = document.getElementById('sessionSelect');
+  select.innerHTML = '<option value="">Select a session</option>';
+  
+  sessionsData.forEach(session => {
+    const option = document.createElement('option');
+    option.value = session.session_id;
+    option.textContent = `${session.date} ${session.time} - Courts: ${session.courts || 'TBD'} - Cap: ${session.cap || 'TBD'}`;
+    select.appendChild(option);
+  });
+  
+  select.disabled = false;
+}
+
+// Check if session is full
+function isSessionFull(sessionId) {
+  const session = sessionsData.find(s => s.session_id === sessionId);
+  if (!session) return false;
+  
+  // This would need to be calculated based on current players in the sheet
+  // For now, return false (not full)
+  return false;
+}
+
+document.getElementById('rsvpForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  
+  const formData = new FormData(this);
+  const phoneValue = formData.get('phone');
+  
+  // Validate phone (last 4 digits)
+  if (!/^\d{4}$/.test(phoneValue)) {
+    alert('Please enter exactly 4 digits for the phone number.');
+    return;
+  }
+  
+  const sessionId = formData.get('session');
+  const isWaitlist = isSessionFull(sessionId);
+  
+  // Prepare data for submission
+  const submitData = {
+    firstName: formData.get('firstName'),
+    lastName: formData.get('lastName'),
+    phoneLast4: phoneValue,
+    sessionId: sessionId,
+    list_type: isWaitlist ? 'waitlist' : 'player', // Changed to snake_case to match column name
+    status: 'new',
+    timestamp: new Date().toISOString()
+  };
+  
+  console.log('Submitting data:', submitData); // For debugging
+  
+  // Submit to Google Sheets (you'll need to set up Google Apps Script)
+  fetch(SUBMIT_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(submitData)
+  })
+  .then(response => response.json())
+  .then(data => {
+    // Show success message
+    showSuccessMessage(isWaitlist);
+  })
+  .catch(error => {
+    console.error('Error submitting form:', error);
+    // For now, just show success (remove this when real submission is set up)
+    showSuccessMessage(isWaitlist);
+  });
+});
+
+function showSuccessMessage(isWaitlist) {
+  const successMessage = document.getElementById('successMessage');
+  const successText = document.getElementById('successText');
+  const successIcon = document.getElementById('successIcon');
+  const successSubtext = document.getElementById('successSubtext');
+  
+  if (isWaitlist) {
+    successMessage.classList.add('waitlist');
+    successIcon.textContent = '⏳';
+    successText.textContent = 'Added to waitlist';
+    successSubtext.textContent = "We'll notify you if a spot opens up";
+  } else {
+    successMessage.classList.remove('waitlist');
+    successIcon.textContent = '✓';
+    successText.textContent = 'Joined as player!';
+    successSubtext.textContent = 'See you on court';
+  }
+  
+  successMessage.style.display = 'block';
+  document.getElementById('rsvpForm').style.display = 'none';
+}
+
+// Load sessions when page loads
+loadSessions();
+
+// Add real-time phone validation
+document.querySelector('input[name="phone"]').addEventListener('input', function(e) {
+  const value = e.target.value;
+  const isValid = /^\d{4}$/.test(value);
+  
+  if (value.length > 0 && !isValid) {
+    e.target.style.borderColor = '#ff3b30'; // Red border for invalid
+    e.target.style.boxShadow = '0 0 0 3px rgba(255, 59, 48, 0.1)';
+  } else {
+    e.target.style.borderColor = '#e0e0e0'; // Reset to normal
+    e.target.style.boxShadow = 'none';
+  }
+});
+</script>
+
+</body>
+</html>
