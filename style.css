@@ -360,7 +360,8 @@ p { margin: 5px 0; }
   color: #333;
 }
 .info-bar-table th {
-  background: #f1f3f6;
+  background: linear-gradient(135deg, #c94f7c 0%, #b5356a 100%);
+  color: white;
   font-size: 0.97em;
   font-weight: 700;
   letter-spacing: 0.2px;
