@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pickleball @ CP1</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 
 </head>
 <body>
 
-<header>
+<header style="font-family: 'Lato', Arial, sans-serif; color: #222;">
   <div style="display: flex; align-items: center;">
-    <img src="LogoWeb-Kangaroo.png" alt="Pickleball Logo">
-    <h1>Pickleball Weekly Game Sessions</h1>
+    <img src="images/LogoWeb-Kangaroo.png" alt="Pickleball Logo">
+    <h1 style="font-family: 'Lato', Arial, sans-serif; color: #222;">Pickleball Weekly Game Sessions</h1>
   </div>
 </header>
 
@@ -21,13 +21,15 @@
   <div class="container">
     <div class="info-bar">
       <div class="info-item"><strong>Organiser:</strong> Maggie</div>
-      <div class="info-item"><strong>Pay ID:</strong> Thi L 0421829872</div>
+      <div class="info-item"><strong>Pay ID:</strong> Thi L 0421829XXX</div>
       <div class="info-item"><strong>Extras:</strong> Drinks included</div>
     </div>
 
+    <!--
     <button onclick="goToForm()" class="btn-ios">
       Join / RSVP
     </button>
+    -->
 
     <div id="loadingMsg">Loading data...</div>
     <div id="debugStatus" style="font-size:0.95em; color:#333; margin-bottom:10px;"></div>
@@ -54,7 +56,7 @@
         </tr>
         <tr>
           <td><span class="dropped">Dropped player</span></td>
-          <td>Player has been removed</td>
+          <td>Player removed (cancelled participation)</td>
         </tr>
         <tr>
           <td><span class="replacement">Replacement</span></td>
@@ -79,7 +81,8 @@ btn.addEventListener('click', function() {
   } else {
     legend.style.display = 'none';
     btn.textContent = 'Show Legend';
-  }
+
+}
 });
 let currentPage = 1;
 const maxColumnsPerPage = 3;
@@ -210,19 +213,28 @@ function renderPage(page) {
 
   if (currentPage > 1) {
     const back = document.createElement('img');
-    back.src = 'arrow_left.png';
-    back.style.height = '30px';
+    back.src = 'images/arrow_left.png';
+    back.style.height = '45px';
+    back.style.opacity = '0.5';
+    back.onmouseover = function() { this.style.opacity = '1'; };
+    back.onmouseout = function() { this.style.opacity = '0.5'; };
+
     back.onclick = () => { currentPage--; renderPage(currentPage); };
     navLeft.appendChild(back);
   }
 
   if (currentPage < totalPages) {
     const forward = document.createElement('img');
-    forward.src = 'arrow_right.png';
-    forward.style.height = '30px';
+    forward.src = 'images/arrow_right.png';
+    forward.style.height = '45px';
+    forward.style.opacity = '0.5';
+    forward.onmouseover = function() { this.style.opacity = '1'; };
+    forward.onmouseout = function() { this.style.opacity = '0.5'; };
     forward.onclick = () => { currentPage++; renderPage(currentPage); };
     navRight.appendChild(forward);
   }
+
+
 }
 
 // Load data
@@ -309,24 +321,38 @@ if (toggleMapBtn && mapSection) {
 }
 </script>
 
-<div style="font-size:12px; color:#555; margin-top:10px;">
-  Version 1.1
-</div>
 
   <div class="fade-divider"></div>
-  <footer class="footer">
+  <footer class="footer" style="font-family: 'Lato', Arial, sans-serif; color: #222;">
     <div class="container">
       <div class="row">
-        <div class="footer-col">
-          <h4>Lizard PickletBall Group</h4>
-          <ul>
-            <li><a href="#">About Us</a></li>
-            <li><a href="guidelines.html" target="_blank">Guidelines</a></li>
-            <li><a href="https://maps.google.com/?q=361+Milperra+Rd,+Sydney+New+South+Wales+2200" target="_blank">Where To Find Us</a></li>
-          </ul>
+        <div class="footer-col" style="display: flex; gap: 40px; justify-content: center;">
+            <div>
+              <ul style="list-style: none; padding: 0;">
+                <li><a href="/" style="color: #222; text-decoration: none;">Home</a></li>
+              </ul>
+            </div>
+            <div>
+              <ul style="list-style: none; padding: 0;">
+                <li><a href="guidelines.html" style="color: #222; text-decoration: none;">Guidelines</a></li>
+              </ul>
+            </div>
+            <div>
+              <ul style="list-style: none; padding: 0;">
+                <li><a href="contact.html" style="color: #222; text-decoration: none;">About Us</a></li>
+              </ul>
+            </div>
+            <div>
+              <ul style="list-style: none; padding: 0;">
+                <li><a href="https://www.google.com/maps/place/Central+Pick+-+Pickleball+Courts/@-33.9273559,150.9869379,17z/data=!3m1!4b1!4m6!3m5!1s0x6b12bfb06a968f35:0x492b7d5432264f30!8m2!3d-33.9273604!4d150.9895128!16s%2Fg%2F11xp85z_hr?entry=ttu&g_ep=EgoyMDI2MDQwOC4wIKXMDSoASAFQAw%3D%3D" target="_blank" style="color: #222; text-decoration: none;">Where to find us</a></li>
+              </ul>
+            </div>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
+    <div style="text-align:center; color:#444; font-size:13px; margin-top:10px; font-family: 'Lato', Arial, sans-serif;">Version 1.1</div>
   </footer>
 </body>
 </html>
