@@ -469,3 +469,7 @@ p { margin: 5px 0; }
   border-radius: 0 !important;
   box-shadow: none !important;
 }
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--table-th-bg) !important;
+}
