@@ -1,3 +1,52 @@
+/*
+  === GLOBAL BACKGROUND COLOR VARIABLE ===
+  To change the background color for all pages, edit the value of --main-bg below.
+  Popular options are provided (comment/uncomment as needed):
+
+  --main-bg: #f7f7f7;      // Default: very light gray
+  --main-bg: #e8f5e9;      // Light green (sporty, fresh)
+  --main-bg: #fffbe6;      // Light yellow (warm, energetic)
+  --main-bg: #e3f2fd;      // Light blue (calm, modern)
+  --main-bg: #fce4ec;      // Light pink (friendly)
+  --main-bg: #f0f4c3;      // Sporty lime (very light green)
+
+  Example usage:
+    body { background: var(--main-bg); }
+*/
+:root {
+  /* ORIGINAL --main-bg: #f7f7f7; */
+  /* --main-bg: #e8f5e9; /* Light green (sporty, fresh) */
+  /* --main-bg: #f7f7f7; */ /* Very light gray (default, neutral, clean) */
+  /* --main-bg: #fffbe6; */ /* Light yellow (warm, energetic) */
+  /* --main-bg: #e3f2fd;  */ /* Light blue (calm, modern) */
+  /* --main-bg: #fce4ec; */ /* Light pink (friendly) */
+   --main-bg: #e9ebd1;  /* Sporty lime (very light green) */
+  /* --main-bg: linear-gradient(135deg, #FFC0CB 0%, #FFD4E0 100%); */ /* Current: Pink gradient */
+
+  /* === TABLE HEADER BACKGROUND VARIABLE ===
+     To change all <th> backgrounds, edit --table-th-bg below.
+     Popular options:
+     --table-th-bg: #c94f7c;      // Sporty pink
+     --table-th-bg: #5ac8fa;      // Sporty blue
+     --table-th-bg: #f0f4c3;      // Sporty lime
+     --table-th-bg: #fffbe6;      // Light yellow
+     --table-th-bg: #e3f2fd;      // Light blue
+     --table-th-bg: #f7f7f7;      // Very light gray
+  */
+  --table-th-bg: #3c5867;
+
+  /* === TABLE CELL BACKGROUND VARIABLE ===
+     To change all <td> backgrounds, edit --table-td-bg below.
+     Popular options:
+     --table-td-bg: #fafbfc;      // Default (very light blue/gray)
+     --table-td-bg: #fffbe6;      // Light yellow
+     --table-td-bg: #e3f2fd;      // Light blue
+     --table-td-bg: #f0f4c3;      // Sporty lime
+     --table-td-bg: #f7f7f7;      // Very light gray
+  */
+  --table-td-bg: #fafbfc;
+}
+
 /* Navigation link hover effect */
 .footer a,
 .footer a:visited,
@@ -10,8 +59,8 @@
 }
 .footer a:hover,
 .footer a:focus {
+  background: var(--table-th-bg) !important;
   color: #fff !important;
-  background: linear-gradient(90deg, #c94f7c 0%, #b5356a 100%);
   box-shadow: 0 2px 8px rgba(201,79,124,0.10);
   text-decoration: underline;
   font-weight: bold;
@@ -37,6 +86,10 @@
 body{
   line-height: 1.5;
   font-family: 'Lato', Arial, sans-serif;
+  background: var(--main-bg);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0 0 40px 0;
 }
   color: #111;
 {
@@ -69,7 +122,7 @@ ul{
 .fade-divider {
   width: 100%;
   height: 6px;
-  background: linear-gradient(90deg, #FFC0CB 0%, #FFB6D9 100%);
+  background: var(--main-bg);
   margin: 0;
   border: none;
 }
@@ -176,21 +229,23 @@ ul{
   border-color: #b3b3b3;
   transform: scale(0.98);
 }
-body { 
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif; 
-  margin: 0; 
-  background: linear-gradient(135deg, #FFC0CB 0%, #FFD4E0 100%);
+/* Removed duplicate body background and font rules for global background color control. */
+body {
+  line-height: 1.5;
+  font-family: 'Lato', Arial, sans-serif;
+  background: var(--main-bg);
   min-height: 100vh;
+  margin: 0;
   padding: 0 0 40px 0;
 }
 header { 
-  background: linear-gradient(135deg, #FFC0CB 0%, #FFB6D9 100%);
-  color: white; 
+  background: var(--main-bg);
+  color: #c94f7c;
   padding: 20px 20px; 
   display: flex; 
   align-items: center; 
   justify-content: space-between;
-  box-shadow: 0 8px 20px rgba(201, 79, 124, 0.15);
+  box-shadow: 0 8px 20px rgba(201, 79, 124, 0.10);
 }
 header img { height: 50px; margin-right: 15px; }
 header h1 {
@@ -205,7 +260,7 @@ header h1 {
 }
 
 .btn-ios {
-  background: linear-gradient(135deg, #c94f7c 0%, #b5356a 100%);
+  background: var(--table-th-bg) !important;
   color: white;
   border: none;
   padding: 8px 15px;
@@ -218,10 +273,13 @@ header h1 {
   letter-spacing: 0.3px;
 }
 .btn-ios:hover {
+  background: var(--table-th-bg) !important;
+  filter: brightness(1.08);
   transform: translateY(-2px);
   box-shadow: 0 12px 28px rgba(201, 79, 124, 0.4);
 }
 .btn-ios:active {
+  filter: brightness(0.97);
   transform: translateY(0);
   box-shadow: 0 4px 12px rgba(201, 79, 124, 0.25);
 }
@@ -266,12 +324,12 @@ header h1 {
   width: 100%;
   margin-top: 20px;
   border-collapse: collapse;
-  background: white;
+  background: var(--main-bg);
   border: none;
   border-radius: 16px;
   overflow: hidden;
   font-size: 0.96em;
-  box-shadow: 0 8px 20px rgba(201, 79, 124, 0.1);
+  box-shadow: 0 8px 20px rgba(201, 79, 124, 0.08);
 }
 .legend-table th,
 .legend-table td {
@@ -280,19 +338,13 @@ header h1 {
   text-align: left;
 }
 .legend-table th {
-  background: linear-gradient(135deg, #c94f7c 0%, #b5356a 100%);
+  background: var(--table-th-bg) !important;
   color: white;
   font-weight: 700;
   letter-spacing: 0.3px;
 }
-.legend-table tr {
-  border-bottom: 1px solid #f0f0f0;
-}
-.legend-table tr:last-child {
-  border-bottom: none;
-}
 .legend-table td {
-  background: #fafbfc;
+  background: var(--table-td-bg) !important;
 }
 .legend-table td span {
   display: inline-block;
@@ -328,12 +380,13 @@ table {
 }
 th, td { border: none; padding: 14px; vertical-align: top; }
 th { 
-  background: linear-gradient(135deg, #c94f7c 0%, #b5356a 100%);
+  background: var(--table-th-bg) !important;
   color: white;
   font-weight: 700;
   letter-spacing: 0.3px;
 } 
-td { background-color: #fafbfc; }
+td { background-color: var(--table-td-bg) !important;
+}
 tr:nth-child(odd) td { background-color: white; }
 td:first-child { padding-left: 16px; }
 td:last-child { padding-right: 16px; }
