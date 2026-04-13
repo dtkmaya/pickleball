@@ -173,9 +173,10 @@ function isExpired(dateStr, timeStr) {
 
 // Render page
 function renderPage(page) {
-  datesRow.innerHTML = '';
-  playersRow.innerHTML = '';
-  waitlistRow.innerHTML = '';
+  // Batch all table row HTML as strings, then set innerHTML once per row for better performance
+  let datesRowHtml = '';
+  let playersRowHtml = '';
+  let waitlistRowHtml = '';
 
   const startIndex = (page - 1) * maxColumnsPerPage;
   const endIndex = Math.min(startIndex + maxColumnsPerPage, eventsData.length);
@@ -185,39 +186,34 @@ function renderPage(page) {
     const courtsText = event.courts || '-';
     const expired = isExpired(event.date, event.time);
 
-    const th = document.createElement('th');
     let costDisplay = '';
     if (typeof event.cost === 'string' && event.cost.trim() !== '') {
       costDisplay = event.cost.trim().startsWith('$') ? event.cost.trim() : ('$' + event.cost.trim());
     }
-    th.innerHTML = `<strong>${event.date}, ${event.time}</strong><br>Courts: ${courtsText}<br>Cap: ${event.cap || '-'}` + (costDisplay ? ` | Cost: ${costDisplay}` : '');
-    if (expired) th.classList.add('expired');
-    datesRow.appendChild(th);
+    let thClass = expired ? ' class="expired"' : '';
+    datesRowHtml += `<th${thClass}><strong>${event.date}, ${event.time}</strong><br>Courts: ${courtsText}<br>Cap: ${event.cap || '-'}` + (costDisplay ? ` | Cost: ${costDisplay}` : '') + `</th>`;
 
-    const tdPlayers = document.createElement('td');
-    tdPlayers.innerHTML = `<strong>Players ${event.players.length >= (event.cap || event.players.length) ? '(FULL)' : ''}</strong>
-      <ol>${event.players.map(p => {
+    let playersClass = expired ? ' class="expired"' : '';
+    playersRowHtml += `<td${playersClass}><strong>Players ${event.players.length >= (event.cap || event.players.length) ? '(FULL)' : ''}</strong><ol>` +
+      event.players.map(p => {
         if (p.status === 'dropped' && p.replacement) {
-          return `<li>
-                    <span class="player-dropped">${p.name}</span> → 
-                    <span class="player-replacement">${p.replacement}</span>
-                  </li>`;
+          return `<li><span class="player-dropped">${p.name}</span> → <span class="player-replacement">${p.replacement}</span></li>`;
         } else {
           let className = '';
           if (p.status === 'new') className = 'player-new';
           if (p.status === 'dropped') className = 'player-dropped';
           return `<li class="${className}">${p.name}</li>`;
         }
-      }).join('')}</ol>`;
-    if (expired) tdPlayers.classList.add('expired');
-    playersRow.appendChild(tdPlayers);
+      }).join('') + `</ol></td>`;
 
-    const tdWait = document.createElement('td');
-    tdWait.innerHTML = `<strong>Waiting List</strong>
-      <ol>${event.waitlist.map(p => `<li>${p.name}</li>`).join('')}</ol>`;
-    if (expired) tdWait.classList.add('expired');
-    waitlistRow.appendChild(tdWait);
+    let waitlistClass = expired ? ' class="expired"' : '';
+    waitlistRowHtml += `<td${waitlistClass}><strong>Waiting List</strong><ol>` +
+      event.waitlist.map(p => `<li>${p.name}</li>`).join('') + `</ol></td>`;
   });
+
+  datesRow.innerHTML = datesRowHtml;
+  playersRow.innerHTML = playersRowHtml;
+  waitlistRow.innerHTML = waitlistRowHtml;
 
   navLeft.innerHTML = '';
   navRight.innerHTML = '';
@@ -333,12 +329,12 @@ if (toggleMapBtn && mapSection) {
 </script>
 
 <div id="footer"></div>
+
+<!-- Footer is loaded asynchronously after all main content and scripts -->
 <script>
-fetch('footer.html')
-  .then(res => res.text())
-  .then(html => { document.getElementById('footer').innerHTML = html; });
+  fetch('footer.html')
+    .then(res => res.text())
+    .then(html => { document.getElementById('footer').innerHTML = html; });
 </script>
-
-
 </body>
 </html>
