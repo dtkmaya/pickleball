@@ -52,40 +52,6 @@
   --table-td-bg: #f5fff7;
 }
 
-/* Navigation link hover effect */
-.footer a,
-.footer a:visited,
-.footer a:active {
-  color: #743e3e !important;
-  text-decoration: none;
-  transition: color 0.18s, background 0.18s, box-shadow 0.18s;
-  border-radius: 7px;
-  padding: 2px 10px;
-}
-  background: #41c047 !important; /* Strong green for visibility */
-  color: #fff !important;         /* White text for contrast */
-  box-shadow: 0 2px 8px rgba(65,192,71,0.10);
-  text-decoration: underline;
-  font-weight: 700;
-  transform: scale(1.06);
-  transition: color 0.2s, background 0.2s, box-shadow 0.2s;
-}
-.footer a:hover,
-.footer a:focus {
-  background: #41c047 !important; /* Strong green for visibility */
-  color: #fff !important;         /* White text for contrast */
-  box-shadow: 0 2px 8px rgba(65,192,71,0.10);
-  text-decoration: underline;
-  font-weight: 700;
-  transform: scale(1.05);
-  transition: color 0.2s, background 0.2s, box-shadow 0.2s;
-}
-/* Footer color enforcement */
-.footer, .footer * {
-  color: #758772 !important;
-  font-weight: 500 !important;
-  text-shadow: none;
-}
 body{
   line-height: 1.5;
   font-family: 'Lato', Arial, sans-serif;
@@ -106,12 +72,6 @@ body{
   margin: auto;
   text-align: center;
   color: #8bac96;
-.footer .container {
-  display: block;
-  max-width: 700px;
-  margin: 0 auto;
-  text-align: center;
-}
 }
 .row{
   display: flex;
@@ -159,9 +119,6 @@ ul{
   width: 48px;
   border-radius: 2px;
 }
-.footer-col ul li:not(:last-child){
-  margin-bottom: 10px;
-}
   font-size: 16px;
   text-transform: capitalize;
   color: #444;
@@ -173,33 +130,6 @@ ul{
 }
   color: #111;
   padding-left: 8px;
-}
-.footer-col .social-links a{
-  display: inline-block;
-  height: 40px;
-  width: 40px;
-  background-color: rgba(255,255,255,0.2);
-  margin:0 10px 10px 0;
-  text-align: center;
-  line-height: 40px;
-  border-radius: 50%;
-  color: #ffffff;
-  transition: all 0.5s ease;
-}
-.footer-col .social-links a:hover{
-  color: #24262b;
-  background-color: #ffffff;
-}
-@media(max-width: 767px){
-  .footer-col{
-    width: 80%;
-    margin-bottom: 30px;
-  }
-}
-@media(max-width: 574px){
-  .footer-col{
-    width: 100%;
-  }
 }
 .btn-secondary {
   background: linear-gradient(135deg, #f5f5f7 0%, #e0e0e5 100%);
