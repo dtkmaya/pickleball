@@ -20,38 +20,43 @@
   /* --main-bg: #fffbe6; */ /* Light yellow (warm, energetic) */
   /* --main-bg: #e3f2fd;  */ /* Light blue (calm, modern) */
   /* --main-bg: #fce4ec; */ /* Light pink (friendly) */
-   --main-bg: #e9ebd1;  /* Sporty lime (very light green) */
+   --main-bg: #e8f5e9;  /* Sporty lime (very light green) */
   /* --main-bg: linear-gradient(135deg, #FFC0CB 0%, #FFD4E0 100%); */ /* Current: Pink gradient */
 
   /* === TABLE HEADER BACKGROUND VARIABLE ===
      To change all <th> backgrounds, edit --table-th-bg below.
      Popular options:
-     --table-th-bg: #c94f7c;      // Sporty pink
+     --table-th-bg: #66bb6a;      // Light/medium green (Material UI, lighter but strong)
+     --table-th-bg: #43a047;      // Medium green (Material UI, pro, popular)
+     --table-th-bg: #388e3c;      // Stronger medium green
+     --table-th-bg: #4caf50;      // Classic green
      --table-th-bg: #5ac8fa;      // Sporty blue
      --table-th-bg: #f0f4c3;      // Sporty lime
      --table-th-bg: #fffbe6;      // Light yellow
      --table-th-bg: #e3f2fd;      // Light blue
      --table-th-bg: #f7f7f7;      // Very light gray
   */
-  --table-th-bg: #3c5867;
+  --table-th-bg: #41c047;
 
   /* === TABLE CELL BACKGROUND VARIABLE ===
      To change all <td> backgrounds, edit --table-td-bg below.
      Popular options:
-     --table-td-bg: #fafbfc;      // Default (very light blue/gray)
+     --table-td-bg: #f5fff7;      // Mint white (very light green, almost white)
+     --table-td-bg: #e8f5e9;      // Light green (Material UI, popular, fresh)
+     --table-td-bg: #f0f4c3;      // Sporty lime
+     --table-td-bg: #fafbfc;      // Very light blue/gray
      --table-td-bg: #fffbe6;      // Light yellow
      --table-td-bg: #e3f2fd;      // Light blue
-     --table-td-bg: #f0f4c3;      // Sporty lime
      --table-td-bg: #f7f7f7;      // Very light gray
   */
-  --table-td-bg: #fafbfc;
+  --table-td-bg: #f5fff7;
 }
 
 /* Navigation link hover effect */
 .footer a,
 .footer a:visited,
 .footer a:active {
-  color: #111 !important;
+  color: #743e3e !important;
   text-decoration: none;
   transition: color 0.18s, background 0.18s, box-shadow 0.18s;
   border-radius: 7px;
@@ -67,20 +72,20 @@
   transform: scale(1.07);
 }
 .footer a:hover, .footer a:focus {
-  color: #c94f7c !important;
+  color: #175c27 !important;
   text-decoration: underline;
   transition: color 0.2s;
 }
 /* Footer color enforcement */
 .footer, .footer * {
-  color: #111 !important;
+  color: #222 !important;
 }
 .footer a,
 .footer a:visited,
 .footer a:active,
 .footer a:hover,
 .footer a:focus {
-  color: #111 !important;
+  color: #3f4d46 !important;
   text-decoration: underline;
 }
 body{
@@ -102,7 +107,7 @@ body{
   max-width: 1170px;
   margin: auto;
   text-align: center;
-  color: #111;
+  color: #8bac96;
 .footer .container {
   display: block;
   max-width: 700px;
@@ -345,6 +350,7 @@ header h1 {
 }
 .legend-table td {
   background: var(--table-td-bg) !important;
+  color: #222 !important;
 }
 .legend-table td span {
   display: inline-block;
@@ -386,6 +392,7 @@ th {
   letter-spacing: 0.3px;
 } 
 td { background-color: var(--table-td-bg) !important;
+  color: #222 !important;
 }
 tr:nth-child(odd) td { background-color: white; }
 td:first-child { padding-left: 16px; }
