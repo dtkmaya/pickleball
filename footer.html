@@ -1,46 +1,69 @@
 <div class="fade-divider"></div>
 <style>
+.footer-col {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
 .footer-col a {
-  padding: 8px 18px;
+  padding: 6px 10px;
   display: inline-block;
   transition: background 0.18s, color 0.18s, margin 0.18s, padding 0.18s;
+  font-size: 15px;
+  margin: 0 2px;
 }
 .footer-col a:hover, .footer-col a:focus {
   background: var(--table-th-bg);
   color: #fff !important;
   border-radius: 6px;
   text-decoration: underline;
-  margin-left: 12px;
-  margin-right: 12px;
-  padding-left: 25px;
-  padding-right: 25px;
+  margin-left: 8px;
+  margin-right: 8px;
+  padding-left: 18px;
+  padding-right: 18px;
+}
+@media (max-width: 600px) {
+  .footer-col {
+    gap: 6px;
+  }
+  .footer-col a {
+    padding: 6px 6px;
+    font-size: 14px;
+    margin: 0 1px;
+  }
+  .footer-col a:hover, .footer-col a:focus {
+    margin-left: 4px;
+    margin-right: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
 }
 </style>
 <footer class="footer" style="font-family: 'Lato', Arial, sans-serif; color: #222;">
   <div class="container">
     <div class="row">
-      <div class="footer-col" style="display: flex; gap: 40px; justify-content: center;">
+      <div class="footer-col">
           <div>
-            <ul style="list-style: none; padding: 0;">
+            <ul style="list-style: none; padding: 0; margin: 0;">
               <li><a href="index.html" style="color: #222; text-decoration: none;">Home</a></li>
             </ul>
           </div>
           <div>
-            <ul style="list-style: none; padding: 0;">
+            <ul style="list-style: none; padding: 0; margin: 0;">
               <li><a href="guidelines.html" style="color: #222; text-decoration: none;">Guidelines</a></li>
             </ul>
           </div>
           <div>
-            <ul style="list-style: none; padding: 0;">
+            <ul style="list-style: none; padding: 0; margin: 0;">
               <li><a href="contact.html" style="color: #222; text-decoration: none;">About Us</a></li>
             </ul>
           </div>
           <div>
-            <ul style="list-style: none; padding: 0;">
+            <ul style="list-style: none; padding: 0; margin: 0;">
               <li><a href="https://www.google.com/maps/place/Central+Pick+-+Pickleball+Courts/@-33.9273559,150.9869379,17z/data=!3m1!4b1!4m6!3m5!1s0x6b12bfb06a968f35:0x492b7d5432264f30!8m2!3d-33.9273604!4d150.9895128!16s%2Fg%2F11xp85z_hr?entry=ttu&g_ep=EgoyMDI2MDQwOC4wIKXMDSoASAFQAw%3D%3D" target="_blank" style="color: #222; text-decoration: none;">Find Us</a></li>
             </ul>
           </div>
-          </ul>
         </div>
       </div>
     </div>
