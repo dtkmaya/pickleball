@@ -47,6 +47,12 @@
     <p>These guidelines may be updated from time to time. We will notify users of significant changes. </p>
     <p style="margin-top: 32px; color: #222;">Thank you for being a part of the LZGroup community. Let's work together to create a positive and enjoyable space for everyone!</p>
   </div>
+  <div id="footer"></div>
+  <script>
+    fetch('footer.html')
+      .then(res => res.text())
+      .then(html => { document.getElementById('footer').innerHTML = html; });
+  </script>
 </body>
 </html>
 

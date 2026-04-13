@@ -40,10 +40,16 @@
 <body>
   <div class="contact-container">
     <img src="images/contractUs.png" alt="Lizard PickleBall Group - Everyone Welcome">
-    <h1 style="font-family: 'Lato', Arial, sans-serif; color: #222; margin-bottom: 18px; font-size: 2em;">Get in Touch & Play With Us</h1>
+    <h1 style="font-family: 'Lato', Arial, sans-serif; color: #222; margin-bottom: 18px; font-size: 2em;">Location</h1>
     <p>We’re a passionate group of pickleball players of all levels, from beginners to advanced. We love playing regularly, improving our skills, and having a great time together.</p>
     <p style="margin-top: 32px; color: #888;">Thank you for being a part of the LZGroup community. Let's work together to create a positive and enjoyable space for everyone!</p>
 
   </div>
+  <div id="footer"></div>
+<script>
+fetch('footer.html')
+  .then(res => res.text())
+  .then(html => { document.getElementById('footer').innerHTML = html; });
+</script>
 </body>
 </html>
